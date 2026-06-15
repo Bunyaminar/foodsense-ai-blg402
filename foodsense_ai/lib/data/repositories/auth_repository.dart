@@ -17,17 +17,21 @@ class AuthRepository {
     });
   }
   
-  Future<UserModel> register(String email, String password) async {
+  Future<UserModel> register(String email, String password, {String? displayName}) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      if (displayName != null) {
+        await credential.user!.updateDisplayName(displayName);
+      }
       await credential.user!.sendEmailVerification();
       return UserModel(
         uid: credential.user!.uid,
         email: credential.user!.email!,
         emailVerified: credential.user!.emailVerified,
+        displayName: displayName,
       );
     } on FirebaseAuthException catch (e) {
       throw AuthException.fromFirebaseCode(e.code);
@@ -51,6 +55,10 @@ class AuthRepository {
     }
   }
   
+  Future<void> updateDisplayName(String name) async {
+    await _auth.currentUser?.updateDisplayName(name);
+  }
+
   Future<void> logout() async {
     await _auth.signOut();
   }

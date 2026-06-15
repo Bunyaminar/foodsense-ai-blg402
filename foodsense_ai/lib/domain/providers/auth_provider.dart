@@ -23,12 +23,12 @@ class AuthProvider with ChangeNotifier {
     });
   }
   
-  Future<bool> register(String email, String password) async {
+  Future<bool> register(String email, String password, {String? displayName}) async {
     _setLoading(true);
     _errorMessage = null;
     
     try {
-      _user = await _repository.register(email, password);
+      _user = await _repository.register(email, password, displayName: displayName);
       notifyListeners();
       return true;
     } on AuthException catch (e) {
@@ -86,6 +86,19 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
   
+  Future<void> updateDisplayName(String name) async {
+    await _repository.updateDisplayName(name);
+    if (_user != null) {
+      _user = UserModel(
+        uid: _user!.uid,
+        email: _user!.email,
+        emailVerified: _user!.emailVerified,
+        displayName: name,
+      );
+      notifyListeners();
+    }
+  }
+
   void clearError() {
     _errorMessage = null;
     notifyListeners();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/providers/auth_provider.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../widgets/common/app_logo.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _nameController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   late AnimationController _animController;
@@ -43,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -52,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     final success = await authProvider.register(
       _emailController.text.trim(),
       _passwordController.text,
+      displayName: _nameController.text.trim(),
     );
     if (!mounted) return;
     if (success) {
@@ -114,37 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo
-                      Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white30, width: 2),
-                        ),
-                        child: const Center(
-                          child: Text('🥗', style: TextStyle(fontSize: 44)),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'FoodsenseAI',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Hesap Oluştur',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                      ),
+                      const AppLogo(size: 48),
                       const SizedBox(height: 32),
 
                       // Kart
@@ -184,6 +158,21 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                 ),
                               ),
                               const SizedBox(height: 24),
+
+                              // Ad Soyad
+                              _buildLabel('👤 Ad Soyad'),
+                              const SizedBox(height: 8),
+                              TextFormField(
+                                controller: _nameController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: _inputDecoration('Adınız Soyadınız', Icons.person_outline),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) return 'Ad soyad gerekli';
+                                  if (value.length < 3) return 'En az 3 karakter olmalı';
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
 
                               // Email
                               _buildLabel('📧 E-posta'),

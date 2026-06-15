@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/providers/auth_provider.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../widgets/common/app_logo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -97,40 +98,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white30, width: 2),
-                        ),
-                        child: const Center(
-                          child: Text('🍎', style: TextStyle(fontSize: 50)),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Başlık
-                      const Text(
-                        'FoodsenseAI',
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Akıllı Market Asistanın',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white.withOpacity(0.8),
-                          letterSpacing: 1,
-                        ),
-                      ),
+                      const AppLogo(size: 52),
                       const SizedBox(height: 40),
 
                       // Kart

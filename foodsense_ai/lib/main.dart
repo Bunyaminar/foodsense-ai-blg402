@@ -10,6 +10,7 @@ import 'domain/providers/profile_provider.dart';
 import 'presentation/screens/auth/login_screen.dart';
 import 'presentation/screens/auth/register_screen.dart';
 import 'presentation/screens/home/dashboard_screen.dart';
+import 'presentation/screens/profile/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           AppConstants.loginRoute: (context) => const LoginScreen(),
           AppConstants.registerRoute: (context) => const RegisterScreen(),
           AppConstants.dashboardRoute: (context) => const DashboardScreen(),
+          '/profile': (context) => const ProfileScreen(),
         },
       ),
     );
