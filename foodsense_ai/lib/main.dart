@@ -17,6 +17,7 @@ import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/settings/settings_screen.dart';
 import 'presentation/screens/scanner/scanner_screen.dart';
+import 'presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'domain/providers/theme_provider.dart';
 import 'core/l10n/app_localizations.dart';
@@ -26,6 +27,7 @@ import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/settings/settings_screen.dart';
 import 'presentation/screens/scanner/scanner_screen.dart';
+import 'presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'domain/providers/theme_provider.dart';
 import 'core/l10n/app_localizations.dart';
@@ -64,11 +66,13 @@ class MyApp extends StatelessWidget {
           '/forgot-password': (context) => const ForgotPasswordScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/scanner': (context) => const ScannerScreen(),
+          '/product-detail': (context) => const ProductDetailScreen(),
           '/preferences': (context) => const PreferencesScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/forgot-password': (context) => const ForgotPasswordScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/scanner': (context) => const ScannerScreen(),
+          '/product-detail': (context) => const ProductDetailScreen(),
         },
       ),
     );
