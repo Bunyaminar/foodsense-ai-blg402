@@ -11,6 +11,14 @@ import 'presentation/screens/auth/login_screen.dart';
 import 'presentation/screens/auth/register_screen.dart';
 import 'presentation/screens/home/dashboard_screen.dart';
 import 'presentation/screens/profile/profile_screen.dart';
+import 'presentation/screens/profile/preferences_screen.dart';
+import 'presentation/screens/splash/splash_screen.dart';
+import 'presentation/screens/onboarding/onboarding_screen.dart';
+import 'presentation/screens/auth/forgot_password_screen.dart';
+import 'presentation/screens/profile/preferences_screen.dart';
+import 'presentation/screens/splash/splash_screen.dart';
+import 'presentation/screens/onboarding/onboarding_screen.dart';
+import 'presentation/screens/auth/forgot_password_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +42,18 @@ class MyApp extends StatelessWidget {
         title: 'FoodsenseAI',
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
-        home: const AuthWrapper(),
+        home: const SplashScreen(),
         routes: {
           AppConstants.loginRoute: (context) => const LoginScreen(),
           AppConstants.registerRoute: (context) => const RegisterScreen(),
           AppConstants.dashboardRoute: (context) => const DashboardScreen(),
           '/profile': (context) => const ProfileScreen(),
+          '/preferences': (context) => const PreferencesScreen(),
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/forgot-password': (context) => const ForgotPasswordScreen(),
+          '/preferences': (context) => const PreferencesScreen(),
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/forgot-password': (context) => const ForgotPasswordScreen(),
         },
       ),
     );

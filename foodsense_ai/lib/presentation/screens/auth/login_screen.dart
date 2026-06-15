@@ -233,6 +233,18 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          TextButton(
+                            onPressed: () => Navigator.pushNamed(context, '/forgot-password'),
+                            child: Text(
+                              'Sifremi Unuttum?',
+                              style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Text(
                             'Hesabınız yok mu?',
                             style: TextStyle(color: Colors.white.withOpacity(0.7)),
