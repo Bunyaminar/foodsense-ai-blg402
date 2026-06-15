@@ -137,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildQuickAction('📷', 'Tara', const Color(0xFF1565C0)),
+                      GestureDetector(onTap: () => Navigator.pushNamed(context, '/scanner'), child: _buildQuickAction('📷', 'Tara', const Color(0xFF1565C0))),
                       _buildQuickAction('🥗', 'Diyet', Theme.of(context).primaryColor),
                       _buildQuickAction('🛒', 'Liste', const Color(0xFF6A1B9A)),
                       _buildQuickAction('🤖', 'AI', const Color(0xFFE65100)),
