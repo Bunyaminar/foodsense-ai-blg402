@@ -14,6 +14,10 @@ dependencies:
   firebase_auth: ^5.0.0
   cloud_firestore: ^5.0.0
   provider: ^6.1.1
+  shared_preferences: ^2.5.5
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +26,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/core/l10n/tr.json
+    - lib/core/l10n/en.json
+    - lib/core/l10n/de.json

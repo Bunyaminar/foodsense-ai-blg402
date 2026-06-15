@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text('Profil guncellendi!'),
               ],
             ),
-            backgroundColor: const Color(0xFF2E7D32),
+            backgroundColor: Theme.of(context).primaryColor,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -73,24 +73,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final name = user?.displayName ?? email.split('@')[0];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
-            backgroundColor: const Color(0xFF2E7D32),
+            backgroundColor: Theme.of(context).primaryColor,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
               onPressed: () => Navigator.pop(context),
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor, Color(0xFF388E3C)],
                   ),
                 ),
                 child: SafeArea(
@@ -148,16 +148,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
 
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // Logo
-                const Center(child: AppLogo(size: 36, textColor: Color(0xFF1B5E20))),
+                Center(child: AppLogo(size: 36, textColor: Theme.of(context).primaryColor)),
                 const SizedBox(height: 20),
 
                 // Profil Bilgileri
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -165,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 8,
-                        offset: const Offset(0, 2),
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),
@@ -192,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           controller: _nameController,
                           enabled: _isEditing,
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF2E7D32)),
+                            prefixIcon: Icon(Icons.person_outline, color: Theme.of(context).primaryColor),
                             filled: true,
                             fillColor: _isEditing ? const Color(0xFFF1F8E9) : const Color(0xFFF5F5F5),
                             border: OutlineInputBorder(
@@ -201,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF2E7D32), width: 1.5),
+                              borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
                             ),
                           ),
                           validator: (value) {
@@ -233,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         // Email dogrulama durumu
                         Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: user?.emailVerified == true
                               ? const Color(0xFFC8E6C9)
@@ -247,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ? Icons.verified_rounded
                                   : Icons.warning_rounded,
                                 color: user?.emailVerified == true
-                                  ? const Color(0xFF2E7D32)
+                                  ? Theme.of(context).primaryColor
                                   : Colors.orange,
                                 size: 20,
                               ),
@@ -259,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: user?.emailVerified == true
-                                    ? const Color(0xFF2E7D32)
+                                    ? Theme.of(context).primaryColor
                                     : Colors.orange,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -276,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ElevatedButton(
                               onPressed: _isSaving ? null : _saveProfile,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF2E7D32),
+                                backgroundColor: Theme.of(context).primaryColor,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -298,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 // Tehlikeli Bolge
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -306,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 8,
-                        offset: const Offset(0, 2),
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),
@@ -319,7 +319,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ListTile(
                         contentPadding: EdgeInsets.zero,
                         leading: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),

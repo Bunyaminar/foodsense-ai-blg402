@@ -45,18 +45,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor, Color(0xFF388E3C)],
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -80,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   itemBuilder: (context, i) {
                     final page = _pages[i];
                     return Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: EdgeInsets.all(32),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -90,7 +90,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.15),
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white24, width: 2),
+                              border: Border.all(color: Colors.white.withValues(alpha: 0.24), width: 2),
                             ),
                             child: Center(
                               child: Text(page['emoji']!, style: const TextStyle(fontSize: 72)),
@@ -123,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 child: Column(
                   children: [
                     Row(
@@ -131,7 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: List.generate(_pages.length, (i) {
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          margin: EdgeInsets.symmetric(horizontal: 4),
                           width: _currentPage == i ? 24 : 8,
                           height: 8,
                           decoration: BoxDecoration(
@@ -158,7 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          foregroundColor: const Color(0xFF2E7D32),
+                          foregroundColor: Theme.of(context).primaryColor,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           elevation: 0,
                         ),

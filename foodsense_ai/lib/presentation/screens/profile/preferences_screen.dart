@@ -38,24 +38,24 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 140,
             pinned: true,
-            backgroundColor: const Color(0xFF2E7D32),
+            backgroundColor: Theme.of(context).primaryColor,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
               onPressed: () => Navigator.pop(context),
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor, Color(0xFF388E3C)],
                   ),
                 ),
                 child: const SafeArea(
@@ -66,7 +66,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           ),
 
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // Baslik
@@ -83,7 +83,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
 
                 // Alerjenler
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -121,12 +121,12 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             },
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                               decoration: BoxDecoration(
-                                color: isSelected ? const Color(0xFF2E7D32) : const Color(0xFFF5F5F5),
+                                color: isSelected ? Theme.of(context).primaryColor : const Color(0xFFF5F5F5),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: isSelected ? const Color(0xFF2E7D32) : Colors.grey.shade300,
+                                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
                                 ),
                               ),
                               child: Row(
@@ -159,7 +159,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
 
                 // Diyet Tercihi
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -194,10 +194,10 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
                               decoration: BoxDecoration(
-                                color: isSelected ? const Color(0xFF2E7D32) : const Color(0xFFF5F5F5),
+                                color: isSelected ? Theme.of(context).primaryColor : const Color(0xFFF5F5F5),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: isSelected ? const Color(0xFF2E7D32) : Colors.grey.shade300,
+                                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
                                 ),
                               ),
                               child: Column(
@@ -241,7 +241,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                               SizedBox(width: 8),
                               Text('Tercihler kaydedildi!'),
                             ]),
-                            backgroundColor: const Color(0xFF2E7D32),
+                            backgroundColor: Theme.of(context).primaryColor,
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
@@ -250,7 +250,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2E7D32),
+                      backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       elevation: 0,

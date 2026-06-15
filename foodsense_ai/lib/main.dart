@@ -15,10 +15,18 @@ import 'presentation/screens/profile/preferences_screen.dart';
 import 'presentation/screens/splash/splash_screen.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
+import 'presentation/screens/settings/settings_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'domain/providers/theme_provider.dart';
+import 'core/l10n/app_localizations.dart';
 import 'presentation/screens/profile/preferences_screen.dart';
 import 'presentation/screens/splash/splash_screen.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
+import 'presentation/screens/settings/settings_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'domain/providers/theme_provider.dart';
+import 'core/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +45,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: MaterialApp(
         title: 'FoodsenseAI',
@@ -51,9 +60,11 @@ class MyApp extends StatelessWidget {
           '/preferences': (context) => const PreferencesScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/forgot-password': (context) => const ForgotPasswordScreen(),
+          '/settings': (context) => const SettingsScreen(),
           '/preferences': (context) => const PreferencesScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/forgot-password': (context) => const ForgotPasswordScreen(),
+          '/settings': (context) => const SettingsScreen(),
         },
       ),
     );

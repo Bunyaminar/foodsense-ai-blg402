@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     final username = displayName ?? email.split('@')[0];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: FadeTransition(
         opacity: _fadeAnim,
         child: CustomScrollView(
@@ -41,19 +41,19 @@ class _DashboardScreenState extends State<DashboardScreen>
               expandedHeight: 200,
               pinned: true,
               automaticallyImplyLeading: false,
-              backgroundColor: const Color(0xFF2E7D32),
+              backgroundColor: Theme.of(context).primaryColor,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+                      colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor, Color(0xFF388E3C)],
                     ),
                   ),
                   child: SafeArea(
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -88,32 +88,33 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   ],
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () async {
-                                  await context.read<AuthProvider>().logout();
-                                  if (mounted) Navigator.pushReplacementNamed(context, '/login');
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(12),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Navigator.pushNamed(context, '/settings'),
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.15),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Icon(Icons.settings_rounded, color: Colors.white, size: 20),
+                                    ),
                                   ),
-                                  child: const Icon(Icons.logout_rounded, color: Colors.white, size: 20),
-                                ),
+                                ],
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.search, color: Colors.white70, size: 18),
+                                Icon(Icons.search, color: Colors.white.withValues(alpha: 0.70), size: 18),
                                 const SizedBox(width: 8),
                                 Text('Urun ara veya barkod tara...',
                                   style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 13)),
@@ -128,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   const Text('Hizli Erisim', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1B1B1B))),
@@ -137,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _buildQuickAction('📷', 'Tara', const Color(0xFF1565C0)),
-                      _buildQuickAction('🥗', 'Diyet', const Color(0xFF2E7D32)),
+                      _buildQuickAction('🥗', 'Diyet', Theme.of(context).primaryColor),
                       _buildQuickAction('🛒', 'Liste', const Color(0xFF6A1B9A)),
                       _buildQuickAction('🤖', 'AI', const Color(0xFFE65100)),
                     ],
@@ -161,7 +162,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   const SizedBox(height: 10),
                   _buildFeatureRow('🧠', 'AI Alerjen Tespiti', 'TensorFlow Lite ile offline analiz', const Color(0xFF6A1B9A), false),
                   const SizedBox(height: 10),
-                  _buildFeatureRow('📊', 'Besin Analizi', 'GPT-4 ile detayli besin degerleri', const Color(0xFF2E7D32), false),
+                  _buildFeatureRow('📊', 'Besin Analizi', 'GPT-4 ile detayli besin degerleri', Theme.of(context).primaryColor, false),
                   const SizedBox(height: 10),
                   _buildFeatureRow('💬', 'AI Chatbot', 'Kisisel beslenme asistanin', const Color(0xFFE65100), false),
                   const SizedBox(height: 24),
@@ -194,11 +195,11 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _buildSummaryCard(String emoji, String value, String label, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8, offset: Offset(0, 2))],
       ),
       child: Column(
         children: [
@@ -213,11 +214,11 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _buildFeatureRow(String emoji, String title, String subtitle, Color color, bool isActive) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8, offset: Offset(0, 2))],
       ),
       child: Row(
         children: [
@@ -237,7 +238,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: isActive ? color.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),

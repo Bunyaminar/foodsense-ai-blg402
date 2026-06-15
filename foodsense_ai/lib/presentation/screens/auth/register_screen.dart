@@ -33,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     _fadeAnim = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeIn),
     );
-    _slideAnim = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+    _slideAnim = Tween<Offset>(begin: Offset(0, 0.3), end: Offset.zero).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOut),
     );
     _animController.forward();
@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
               Text('Kayıt başarılı! Giriş yapabilirsiniz.'),
             ],
           ),
-          backgroundColor: const Color(0xFF2E7D32),
+          backgroundColor: Theme.of(context).primaryColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -96,14 +96,14 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
               Color(0xFF0288D1),
-              Color(0xFF2E7D32),
-              Color(0xFF1B5E20),
+              Theme.of(context).primaryColor,
+              Theme.of(context).primaryColor,
             ],
           ),
         ),
@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
               position: _slideAnim,
               child: Center(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -123,16 +123,16 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
                       // Kart
                       Container(
-                        padding: const EdgeInsets.all(28),
+                        padding: EdgeInsets.all(28),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: Colors.white24),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
                               blurRadius: 20,
-                              offset: const Offset(0, 10),
+                              offset: Offset(0, 10),
                             ),
                           ],
                         ),
@@ -203,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                      color: Colors.white60,
+                                      color: Colors.white.withValues(alpha: 0.60),
                                     ),
                                     onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                                   ),
@@ -229,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       _obscureConfirm ? Icons.visibility_off : Icons.visibility,
-                                      color: Colors.white60,
+                                      color: Colors.white.withValues(alpha: 0.60),
                                     ),
                                     onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
                                   ),
@@ -339,7 +339,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     return InputDecoration(
       hintText: hint,
       hintStyle: TextStyle(color: Colors.white.withOpacity(0.4)),
-      prefixIcon: Icon(icon, color: Colors.white60, size: 20),
+      prefixIcon: Icon(icon, color: Colors.white.withValues(alpha: 0.60), size: 20),
       filled: true,
       fillColor: Colors.white.withOpacity(0.1),
       border: OutlineInputBorder(
@@ -352,11 +352,11 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white, width: 1.5),
+        borderSide: BorderSide(color: Colors.white, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFEF9A9A)),
+        borderSide: BorderSide(color: Color(0xFFEF9A9A)),
       ),
       errorStyle: const TextStyle(color: Color(0xFFEF9A9A)),
     );

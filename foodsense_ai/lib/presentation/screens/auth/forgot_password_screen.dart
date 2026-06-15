@@ -48,17 +48,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+            colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor, Color(0xFF388E3C)],
           ),
         ),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -67,11 +67,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                   if (!_emailSent) ...[
                     Container(
-                      padding: const EdgeInsets.all(28),
+                      padding: EdgeInsets.all(28),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: Colors.white24),
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
                       ),
                       child: Form(
                         key: _formKey,
@@ -112,7 +112,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               decoration: InputDecoration(
                                 hintText: 'ornek@email.com',
                                 hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
-                                prefixIcon: const Icon(Icons.email_outlined, color: Colors.white60, size: 20),
+                                prefixIcon: Icon(Icons.email_outlined, color: Colors.white.withValues(alpha: 0.60), size: 20),
                                 filled: true,
                                 fillColor: Colors.white.withValues(alpha: 0.1),
                                 border: OutlineInputBorder(
@@ -125,7 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(color: Colors.white, width: 1.5),
+                                  borderSide: BorderSide(color: Colors.white, width: 1.5),
                                 ),
                                 errorStyle: const TextStyle(color: Color(0xFFEF9A9A)),
                               ),
@@ -144,16 +144,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 onPressed: _isLoading ? null : _sendResetEmail,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
-                                  foregroundColor: const Color(0xFF2E7D32),
+                                  foregroundColor: Theme.of(context).primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                   ),
                                   elevation: 0,
                                 ),
                                 child: _isLoading
-                                  ? const SizedBox(
+                                  ? SizedBox(
                                       width: 22, height: 22,
-                                      child: CircularProgressIndicator(strokeWidth: 2.5, color: Color(0xFF2E7D32)))
+                                      child: CircularProgressIndicator(strokeWidth: 2.5, color: Theme.of(context).primaryColor))
                                   : const Text('Sifre Sifirlama Linki Gonder',
                                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                               ),
@@ -164,11 +164,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ] else ...[
                     Container(
-                      padding: const EdgeInsets.all(28),
+                      padding: EdgeInsets.all(28),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: Colors.white24),
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
                       ),
                       child: Column(
                         children: [
@@ -200,7 +200,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
-                                foregroundColor: const Color(0xFF2E7D32),
+                                foregroundColor: Theme.of(context).primaryColor,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                                 elevation: 0,
                               ),
@@ -216,7 +216,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   const SizedBox(height: 20),
                   TextButton.icon(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white70, size: 18),
+                    icon: Icon(Icons.arrow_back, color: Colors.white.withValues(alpha: 0.70), size: 18),
                     label: Text(
                       'Girise Don',
                       style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
