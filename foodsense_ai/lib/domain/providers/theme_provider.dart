@@ -9,6 +9,8 @@ class ThemeProvider with ChangeNotifier {
   Color _primaryColor = const Color(0xFF2E7D32);
   bool _isDarkMode = false;
   String _language = 'Turkce';
+  bool _isLoaded = false;
+  bool get isLoaded => _isLoaded;
 
   Color get primaryColor => _primaryColor;
   bool get isDarkMode => _isDarkMode;
@@ -39,18 +41,20 @@ class ThemeProvider with ChangeNotifier {
     _primaryColor = themeColors[themeName] ?? const Color(0xFF2E7D32);
     _isDarkMode = prefs.getBool(_darkModeKey) ?? false;
     _language = prefs.getString(_languageKey) ?? 'Turkce';
+    _isLoaded = true;
     notifyListeners();
   }
 
   Future<void> setTheme(String themeName) async {
     _primaryColor = themeColors[themeName] ?? const Color(0xFF2E7D32);
+    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_themeKey, themeName);
-    notifyListeners();
   }
 
   Future<void> setDarkMode(bool value) async {
     _isDarkMode = value;
+    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_darkModeKey, value);
     notifyListeners();
@@ -58,9 +62,9 @@ class ThemeProvider with ChangeNotifier {
 
   Future<void> setLanguage(String lang) async {
     _language = lang;
+    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_languageKey, lang);
-    notifyListeners();
   }
 
   ThemeData get lightTheme => ThemeData(

@@ -4,24 +4,15 @@ import '../../../domain/providers/auth_provider.dart';
 import '../../../domain/providers/theme_provider.dart';
 import '../../widgets/common/app_logo.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = true;
-  bool _emailNotifications = false;
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
-    final primaryColor = themeProvider.primaryColor;
+    final primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -38,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [primaryColor.withValues(alpha: 0.8), primaryColor],
+                    colors: [primaryColor, primaryColor.withValues(alpha: 0.7)],
                   ),
                 ),
                 child: const SafeArea(
@@ -49,46 +40,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           SliverPadding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
 
-                // Bildirimler
-                _buildSectionTitle('🔔 Bildirimler'),
-                const SizedBox(height: 8),
-                _buildCard([
-                  _buildSwitchTile(
-                    '📱 Uygulama Bildirimleri',
-                    'Urun analizi ve oneriler',
-                    _notifications,
-                    primaryColor,
-                    (val) => setState(() => _notifications = val),
-                  ),
-                  const Divider(height: 1, indent: 16, endIndent: 16),
-                  _buildSwitchTile(
-                    '📧 Email Bildirimleri',
-                    'Haftalik beslenme raporu',
-                    _emailNotifications,
-                    primaryColor,
-                    (val) => setState(() => _emailNotifications = val),
-                  ),
-                ]),
-                const SizedBox(height: 16),
-
-                // Gorunum
+                // Görünüm
                 _buildSectionTitle('🎨 Gorunum'),
                 const SizedBox(height: 8),
                 _buildCard([
-                  _buildSwitchTile(
-                    '🌙 Karanlik Mod',
-                    'Gece modunu aktif et',
-                    themeProvider.isDarkMode,
-                    primaryColor,
-                    (val) => themeProvider.setDarkMode(val),
+                  // Karanlık Mod
+                  SwitchListTile(
+                    title: const Text('🌙 Karanlik Mod',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    subtitle: const Text('Gece modunu aktif et',
+                      style: TextStyle(fontSize: 11)),
+                    value: themeProvider.isDarkMode,
+                    activeColor: primaryColor,
+                    onChanged: (val) => themeProvider.setDarkMode(val),
                   ),
                   const Divider(height: 1, indent: 16, endIndent: 16),
+
+                  // Tema Rengi
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -96,46 +70,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                         const SizedBox(height: 4),
                         const Text('Uygulama rengini secin',
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
-                        const SizedBox(height: 12),
+                          style: TextStyle(fontSize: 11, color: Colors.grey)),
+                        const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: themeProvider.themeColors.entries.map((entry) {
                             final isSelected = themeProvider.selectedThemeName == entry.key;
                             return GestureDetector(
-                              onTap: () {
-                                themeProvider.setTheme(entry.key);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('${entry.key} tema secildi!'),
-                                    backgroundColor: entry.value,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: const Duration(seconds: 1),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                );
-                              },
+                              onTap: () => themeProvider.setTheme(entry.key),
                               child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                width: 44,
-                                height: 44,
+                                duration: const Duration(milliseconds: 300),
+                                width: isSelected ? 52 : 44,
+                                height: isSelected ? 52 : 44,
                                 decoration: BoxDecoration(
                                   color: entry.value,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: isSelected ? Colors.black : Colors.transparent,
+                                    color: isSelected ? Colors.black87 : Colors.transparent,
                                     width: 3,
                                   ),
                                   boxShadow: isSelected ? [
                                     BoxShadow(
-                                      color: entry.value.withValues(alpha: 0.4),
-                                      blurRadius: 8,
-                                      offset: Offset(0, 3),
-                                    ),
+                                      color: entry.value.withValues(alpha: 0.5),
+                                      blurRadius: 12, offset: const Offset(0, 4)),
                                   ] : [],
                                 ),
                                 child: isSelected
-                                  ? const Icon(Icons.check, color: Colors.white, size: 20)
+                                  ? const Icon(Icons.check, color: Colors.white, size: 22)
                                   : null,
                               ),
                             );
@@ -152,44 +113,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 8),
                 _buildCard([
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Uygulama Dili',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                         const SizedBox(height: 12),
-                        ...['Turkce', 'English', 'Deutsch'].map((lang) {
+                        ...['Turkce', 'English'].map((lang) {
                           final isSelected = themeProvider.language == lang;
                           return GestureDetector(
                             onTap: () => themeProvider.setLanguage(lang),
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              margin: const EdgeInsets.only(bottom: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
                               decoration: BoxDecoration(
                                 color: isSelected
                                   ? primaryColor.withValues(alpha: 0.1)
-                                  : const Color(0xFFF5F5F5),
-                                borderRadius: BorderRadius.circular(10),
+                                  : Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: isSelected ? primaryColor : Colors.transparent,
+                                  width: 2,
                                 ),
                               ),
                               child: Row(
                                 children: [
-                                  Text(
-                                    lang == 'Turkce' ? '🇹🇷' : lang == 'English' ? '🇬🇧' : '🇩🇪',
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
+                                  Text(lang == 'Turkce' ? '🇹🇷' : '🇬🇧',
+                                    style: const TextStyle(fontSize: 24)),
                                   const SizedBox(width: 12),
-                                  Text(lang,
+                                  Text(
+                                    lang == 'Turkce' ? 'Türkçe' : 'English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      color: isSelected ? primaryColor : const Color(0xFF1B1B1B),
-                                    )),
+                                      fontSize: 15,
+                                      color: isSelected ? primaryColor
+                                        : const Color(0xFF1B1B1B),
+                                    ),
+                                  ),
                                   const Spacer(),
                                   if (isSelected)
-                                    Icon(Icons.check_circle, color: primaryColor, size: 20),
+                                    AnimatedContainer(
+                                      duration: const Duration(milliseconds: 200),
+                                      child: Icon(Icons.check_circle,
+                                        color: primaryColor, size: 22),
+                                    ),
                                 ],
                               ),
                             ),
@@ -201,7 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ]),
                 const SizedBox(height: 16),
 
-                // Hakkinda
+                // Hakkında
                 _buildSectionTitle('ℹ️ Hakkinda'),
                 const SizedBox(height: 8),
                 _buildCard([
@@ -213,14 +183,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ]),
                 const SizedBox(height: 16),
 
-                // Cikis
+                // Çıkış
                 SizedBox(
                   width: double.infinity,
                   height: 52,
                   child: ElevatedButton.icon(
                     onPressed: () async {
                       await context.read<AuthProvider>().logout();
-                      if (mounted) Navigator.pushReplacementNamed(context, '/login');
+                      if (context.mounted) {
+                        Navigator.pushReplacementNamed(context, '/login');
+                      }
                     },
                     icon: const Icon(Icons.logout_rounded),
                     label: const Text('Cikis Yap',
@@ -228,7 +200,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.shade400,
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
                       elevation: 0,
                     ),
                   ),
@@ -244,7 +217,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSectionTitle(String title) {
     return Text(title,
-      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF1B1B1B)));
+      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold,
+        color: Color(0xFF1B1B1B)));
   }
 
   Widget _buildCard(List<Widget> children) {
@@ -252,24 +226,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
+        boxShadow: [BoxShadow(
+          color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
       ),
       child: Column(children: children),
     );
   }
 
-  Widget _buildSwitchTile(String title, String subtitle, bool value, Color color, Function(bool) onChanged) {
-    return ListTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-      subtitle: Text(subtitle, style: const TextStyle(fontSize: 11)),
-      trailing: Switch(value: value, onChanged: onChanged, activeColor: color),
-    );
-  }
-
   Widget _buildInfoTile(String title, String value) {
     return ListTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-      trailing: Text(value, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+      title: Text(title,
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+      trailing: Text(value,
+        style: const TextStyle(fontSize: 13, color: Colors.grey)),
     );
   }
 }
