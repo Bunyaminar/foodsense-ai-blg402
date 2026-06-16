@@ -108,68 +108,7 @@ class SettingsScreen extends StatelessWidget {
                 ]),
                 const SizedBox(height: 16),
 
-                // Dil
-                _buildSectionTitle('🌍 Dil'),
-                const SizedBox(height: 8),
-                _buildCard([
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Uygulama Dili',
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                        const SizedBox(height: 12),
-                        ...['Turkce', 'English'].map((lang) {
-                          final isSelected = themeProvider.language == lang;
-                          return GestureDetector(
-                            onTap: () => themeProvider.setLanguage(lang),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              margin: const EdgeInsets.only(bottom: 8),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                  ? primaryColor.withValues(alpha: 0.1)
-                                  : Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: isSelected ? primaryColor : Colors.transparent,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(lang == 'Turkce' ? '🇹🇷' : '🇬🇧',
-                                    style: const TextStyle(fontSize: 24)),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    lang == 'Turkce' ? 'Türkçe' : 'English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: isSelected ? primaryColor
-                                        : const Color(0xFF1B1B1B),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  if (isSelected)
-                                    AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      child: Icon(Icons.check_circle,
-                                        color: primaryColor, size: 22),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 16),
+
 
                 // Hakkında
                 _buildSectionTitle('ℹ️ Hakkinda'),
