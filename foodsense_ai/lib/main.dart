@@ -16,6 +16,8 @@ import 'presentation/screens/splash/splash_screen.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/settings/settings_screen.dart';
+import 'presentation/screens/favorites/favorites_screen.dart';
+import 'presentation/screens/history/history_screen.dart';
 import 'presentation/screens/scanner/scanner_screen.dart';
 import 'presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,6 +28,8 @@ import 'presentation/screens/splash/splash_screen.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/settings/settings_screen.dart';
+import 'presentation/screens/favorites/favorites_screen.dart';
+import 'presentation/screens/history/history_screen.dart';
 import 'presentation/screens/scanner/scanner_screen.dart';
 import 'presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -65,12 +69,16 @@ class MyApp extends StatelessWidget {
           '/onboarding': (context) => const OnboardingScreen(),
           '/forgot-password': (context) => const ForgotPasswordScreen(),
           '/settings': (context) => const SettingsScreen(),
+          '/favorites': (context) => const FavoritesScreen(),
+          '/history': (context) => const HistoryScreen(),
           '/scanner': (context) => const ScannerScreen(),
           '/product-detail': (context) => const ProductDetailScreen(),
           '/preferences': (context) => const PreferencesScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/forgot-password': (context) => const ForgotPasswordScreen(),
           '/settings': (context) => const SettingsScreen(),
+          '/favorites': (context) => const FavoritesScreen(),
+          '/history': (context) => const HistoryScreen(),
           '/scanner': (context) => const ScannerScreen(),
           '/product-detail': (context) => const ProductDetailScreen(),
         },

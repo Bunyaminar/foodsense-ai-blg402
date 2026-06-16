@@ -138,9 +138,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(onTap: () => Navigator.pushNamed(context, '/scanner'), child: _buildQuickAction('📷', 'Tara', const Color(0xFF1565C0))),
-                      _buildQuickAction('🥗', 'Diyet', Theme.of(context).primaryColor),
-                      _buildQuickAction('🛒', 'Liste', const Color(0xFF6A1B9A)),
-                      _buildQuickAction('🤖', 'AI', const Color(0xFFE65100)),
+                      GestureDetector(onTap: () => Navigator.pushNamed(context, '/favorites'), child: _buildQuickAction('❤️', 'Favoriler', const Color(0xFFE91E63))),
+                      GestureDetector(onTap: () => Navigator.pushNamed(context, '/history'), child: _buildQuickAction('📊', 'Gecmis', const Color(0xFF6A1B9A))),
+                      GestureDetector(onTap: () => Navigator.pushNamed(context, '/preferences'), child: _buildQuickAction('🥗', 'Diyet', Theme.of(context).primaryColor)),
                     ],
                   ),
                   const SizedBox(height: 24),

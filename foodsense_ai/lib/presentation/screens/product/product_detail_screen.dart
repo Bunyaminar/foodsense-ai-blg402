@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../data/services/food_api_service.dart';
+import '../../../data/services/favorites_service.dart';
+import '../../../data/services/history_service.dart';
 import '../../widgets/common/app_logo.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -15,6 +17,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool _isAnalyzing = false;
   String? _error;
   Map<String, dynamic>? _aiResult;
+  bool _isFavorite = false;
 
   @override
   void didChangeDependencies() {
@@ -33,7 +36,36 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         if (product == null) _error = 'Urun bulunamadi. Barkod: $barcode';
       });
       // Urun bulununca otomatik AI analizi yap
-      if (product != null) _analyzeWithAI();
+      if (product != null) {
+        _analyzeWithAI();
+        _checkFavorite();
+      }
+    }
+  }
+
+  Future<void> _checkFavorite() async {
+    if (_product == null) return;
+    final isFav = await FavoritesService.isFavorite(_product!.barcode);
+    if (mounted) setState(() => _isFavorite = isFav);
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_product == null) return;
+    if (_isFavorite) {
+      await FavoritesService.removeFavorite(_product!.barcode);
+      setState(() => _isFavorite = false);
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: const Text('Favorilerden kaldirildi'),
+          backgroundColor: Colors.orange, behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))));
+    } else {
+      final score = _aiResult != null ? _aiResult!['health_score'] as int? : null;
+      await FavoritesService.addFavorite(_product!, healthScore: score);
+      setState(() => _isFavorite = true);
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: const Text('Favorilere eklendi!'),
+          backgroundColor: const Color(0xFF2E7D32), behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))));
     }
   }
 
@@ -41,7 +73,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     if (_product == null) return;
     setState(() => _isAnalyzing = true);
     final result = await FoodApiService.analyzeWithAI(_product!);
-    if (mounted) setState(() { _aiResult = result; _isAnalyzing = false; });
+    if (mounted) {
+      setState(() { _aiResult = result; _isAnalyzing = false; });
+      if (result != null && _product != null) {
+        await HistoryService.saveAnalysis(
+          barcode: _product!.barcode,
+          productName: _product!.name,
+          brand: _product!.brand,
+          imageUrl: _product!.imageUrl,
+          healthScore: result['health_score'] as int,
+          category: result['category'] as String,
+          warnings: List<String>.from(result['warnings'] ?? []),
+          positives: List<String>.from(result['positives'] ?? []),
+        );
+      }
+    }
   }
 
   Color _getScoreColor(int score) {
@@ -64,6 +110,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
               onPressed: () => Navigator.pop(context),
             ),
+            actions: [
+              if (_product != null)
+                IconButton(
+                  icon: Icon(
+                    _isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: _isFavorite ? Colors.red.shade300 : Colors.white,
+                  ),
+                  onPressed: _toggleFavorite,
+                ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
