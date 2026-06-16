@@ -68,6 +68,8 @@ class ProductModel {
   }
 }
 
+const String aiApiUrl = 'https://humble-pancake-pjqgv54wvvpx27wqr-8000.app.github.dev';
+
 class FoodApiService {
   static const String _baseUrl = 'https://world.openfoodfacts.org/api/v0/product';
 
@@ -86,6 +88,39 @@ class FoodApiService {
         if (json['status'] == 1) {
           return ProductModel.fromOpenFoodFacts(json);
         }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // AI Model ile analiz et
+  static Future<Map<String, dynamic>?> analyzeWithAI(ProductModel product) async {
+    try {
+      final url = Uri.parse('https://humble-pancake-pjqgv54wvvpx27wqr-8000.app.github.dev/analyze');
+      final body = {
+        'name': product.name,
+        'ingredients': product.ingredients ?? '',
+        'sugar_100g': (product.nutrients?['sugars'] ?? 0).toDouble(),
+        'fat_100g': (product.nutrients?['fat'] ?? 0).toDouble(),
+        'salt_100g': (product.nutrients?['salt'] ?? 0).toDouble(),
+        'protein_100g': (product.nutrients?['protein'] ?? 0).toDouble(),
+        'fiber_100g': (product.nutrients?['fiber'] ?? 0).toDouble(),
+        'energy_100g': (product.nutrients?['energy'] ?? 0).toDouble(),
+        'nova_group': 4,
+        'allergens': product.allergens,
+        'user_allergens': [],
+      };
+      
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 10));
+      
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
       }
       return null;
     } catch (e) {
