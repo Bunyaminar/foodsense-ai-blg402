@@ -262,7 +262,7 @@ def analyze(req: AnalyzeRequest):
 
         import re as re2
         def word_check(text, kw):
-            pattern = r'(?<![a-zÀ-ɏ])' + re2.escape(kw) + r'(?![a-zÀ-ɏ])'
+            pattern = r'(?<![a-zğüşıöçA-ZĞÜŞİÖÇ])' + re2.escape(kw) + r'(?![a-zğüşıöçA-ZĞÜŞİÖÇ])'
             return bool(re2.search(pattern, text))
 
         diet_warning_added = False
