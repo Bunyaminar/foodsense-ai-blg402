@@ -260,12 +260,17 @@ def analyze(req: AnalyzeRequest):
             ],
         }
 
+        import re as re2
+        def word_check(text, kw):
+            pattern = r'(?<![a-zÀ-ɏ])' + re2.escape(kw) + r'(?![a-zÀ-ɏ])'
+            return bool(re2.search(pattern, text))
+
         diet_warning_added = False
 
         # Icerik bazli kontrol
         if req.user_diet in diet_ingredient_rules:
             for keyword, msg in diet_ingredient_rules[req.user_diet]:
-                if keyword in ing_lower:
+                if word_check(ing_lower, keyword):
                     warnings.append('⚠️ ' + msg)
                     health_score = max(0, health_score - 25)
                     diet_warning_added = True
