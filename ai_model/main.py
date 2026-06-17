@@ -262,8 +262,9 @@ def analyze(req: AnalyzeRequest):
 
         import re as re2
         def word_check(text, kw):
-            pattern = r'(?<![a-zğüşıöçA-ZĞÜŞİÖÇ])' + re2.escape(kw) + r'(?![a-zğüşıöçA-ZĞÜŞİÖÇ])'
-            return bool(re2.search(pattern, text))
+            # Kelimeyi bosluk, virgul, parantez ile sinirla
+            padded = ' ' + text.replace(',', ' ').replace('(', ' ').replace(')', ' ') + ' '
+            return (' ' + kw + ' ') in padded
 
         diet_warning_added = False
 
