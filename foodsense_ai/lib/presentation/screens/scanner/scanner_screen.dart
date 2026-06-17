@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/services/food_api_service.dart';
-import '../../widgets/common/app_logo.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -10,7 +9,8 @@ class ScannerScreen extends StatefulWidget {
 }
 
 class _ScannerScreenState extends State<ScannerScreen> {
-  final _manualController = TextEditingController();
+  final _barcodeController = TextEditingController();
+  final _searchController = TextEditingController();
   String _searchQuery = '';
 
   final List<Map<String, dynamic>> _allProducts = [
@@ -22,86 +22,86 @@ class _ScannerScreenState extends State<ScannerScreen> {
     {'emoji': '⚡', 'name': 'Red Bull', 'barcode': '9002490100070', 'color': 0xFF424242, 'category': 'İçecek'},
     {'emoji': '🧃', 'name': 'Lipton Ice Tea', 'barcode': '8714100919316', 'color': 0xFFFF8F00, 'category': 'İçecek'},
     {'emoji': '🥤', 'name': 'Uludag Gazoz', 'barcode': '8690514001043', 'color': 0xFF1565C0, 'category': 'İçecek'},
-    {'emoji': '☕', 'name': 'Nescafe Classic', 'barcode': '8690626010010', 'color': 0xFF4E342E, 'category': 'İçecek'},
-    {'emoji': '🍵', 'name': 'Caykur Rize Cay', 'barcode': '8690627010019', 'color': 0xFF2E7D32, 'category': 'İçecek'},
+    {'emoji': '☕', 'name': 'Nescafe', 'barcode': '8690626010010', 'color': 0xFF4E342E, 'category': 'İçecek'},
+    {'emoji': '🍵', 'name': 'Caykur Cay', 'barcode': '8690627010019', 'color': 0xFF2E7D32, 'category': 'İçecek'},
     // Süt Ürünleri
-    {'emoji': '🥛', 'name': 'Pinar Sut', 'barcode': '8690632050144', 'color': 0xFF0288D1, 'category': 'Süt'},
-    {'emoji': '🥛', 'name': 'Sutas Sut', 'barcode': '8690632001015', 'color': 0xFF0288D1, 'category': 'Süt'},
-    {'emoji': '🍶', 'name': 'Sutas Yogurt', 'barcode': '8690632145016', 'color': 0xFF0288D1, 'category': 'Süt'},
-    {'emoji': '🧀', 'name': 'Pinar Kasar', 'barcode': '8690632078017', 'color': 0xFFFF8F00, 'category': 'Süt'},
-    {'emoji': '🥛', 'name': 'Pinar Ayran', 'barcode': '8690632055003', 'color': 0xFF0288D1, 'category': 'Süt'},
-    {'emoji': '🍦', 'name': 'Pinar Kaymak', 'barcode': '8690632088016', 'color': 0xFFFF8F00, 'category': 'Süt'},
-    {'emoji': '🌱', 'name': 'Alpro Soya Sutu', 'barcode': '5411188108085', 'color': 0xFF2E7D32, 'category': 'Süt'},
-    // Çikolata & Tatlı
-    {'emoji': '🍫', 'name': 'Nutella', 'barcode': '3017620422003', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Milka Cikolata', 'barcode': '7622210016522', 'color': 0xFF7B1FA2, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Snickers', 'barcode': '5000159461122', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Twix', 'barcode': '5000159472005', 'color': 0xFFFF8F00, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Kit Kat', 'barcode': '7613035518209', 'color': 0xFFE53935, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Kinder Bueno', 'barcode': '8000500310427', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍭', 'name': 'Haribo Ayicik', 'barcode': '4001686325988', 'color': 0xFFFFD600, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Eti Browni', 'barcode': '8690526636762', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Eti Tutku', 'barcode': '8690526082458', 'color': 0xFF880E4F, 'category': 'Tatli'},
-    {'emoji': '🍫', 'name': 'Ulker Cikolata', 'barcode': '8690504151027', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍯', 'name': 'Torku Findik Krema', 'barcode': '8690526510017', 'color': 0xFFFF8F00, 'category': 'Tatli'},
-    {'emoji': '🍰', 'name': 'Eti Karam', 'barcode': '8690526155025', 'color': 0xFFFF8F00, 'category': 'Tatli'},
-    {'emoji': '🍬', 'name': 'Eti Puf', 'barcode': '8690526165048', 'color': 0xFFE91E63, 'category': 'Tatli'},
-    {'emoji': '🍰', 'name': 'Ulker Dankek', 'barcode': '8690504099701', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    {'emoji': '🍪', 'name': 'Ulker Choco Pie', 'barcode': '8690504023142', 'color': 0xFF4E342E, 'category': 'Tatli'},
-    // Biskuvi
-    {'emoji': '🍪', 'name': 'Eti Cin', 'barcode': '8690526790033', 'color': 0xFF2E7D32, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'Ulker Biskuvi', 'barcode': '8690504015727', 'color': 0xFF1565C0, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'Ulker Hanımeller', 'barcode': '8690504016427', 'color': 0xFF7B1FA2, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'Oreo', 'barcode': '7622210449283', 'color': 0xFF212121, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'Ulker Dido', 'barcode': '8690769030019', 'color': 0xFF4E342E, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'Eti Burcak', 'barcode': '8690526610007', 'color': 0xFFFF8F00, 'category': 'Biskuvi'},
-    {'emoji': '🍪', 'name': 'McVities Digestive', 'barcode': '5000168201118', 'color': 0xFF795548, 'category': 'Biskuvi'},
-    {'emoji': '🥨', 'name': 'Eti Crax Kraker', 'barcode': '8690526195014', 'color': 0xFFFF8F00, 'category': 'Biskuvi'},
+    {'emoji': '🥛', 'name': 'Pinar Sut', 'barcode': '8690632050144', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🥛', 'name': 'Sutas Sut', 'barcode': '8690632001015', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🍶', 'name': 'Sutas Yogurt', 'barcode': '8690632145016', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🧀', 'name': 'Pinar Kasar', 'barcode': '8690632078017', 'color': 0xFFFF8F00, 'category': 'Süt Ürünleri'},
+    {'emoji': '🥛', 'name': 'Pinar Ayran', 'barcode': '8690632055003', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🌱', 'name': 'Alpro Soya Sutu', 'barcode': '5411188108085', 'color': 0xFF2E7D32, 'category': 'Süt Ürünleri'},
+    // Çikolata
+    {'emoji': '🍫', 'name': 'Nutella', 'barcode': '3017620422003', 'color': 0xFF4E342E, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Milka', 'barcode': '7622210016522', 'color': 0xFF7B1FA2, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Snickers', 'barcode': '5000159461122', 'color': 0xFF4E342E, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Twix', 'barcode': '5000159472005', 'color': 0xFFFF8F00, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Kit Kat', 'barcode': '7613035518209', 'color': 0xFFE53935, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Kinder Bueno', 'barcode': '8000500310427', 'color': 0xFF4E342E, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Eti Browni', 'barcode': '8690526636762', 'color': 0xFF4E342E, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Eti Tutku', 'barcode': '8690526082458', 'color': 0xFF880E4F, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Ulker Cikolata', 'barcode': '8690504151027', 'color': 0xFF4E342E, 'category': 'Çikolata'},
+    {'emoji': '🍯', 'name': 'Torku Findik Krema', 'barcode': '8690526510017', 'color': 0xFFFF8F00, 'category': 'Çikolata'},
+    // Bisküvi
+    {'emoji': '🍪', 'name': 'Eti Cin', 'barcode': '8690526790033', 'color': 0xFF2E7D32, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Ulker Biskuvi', 'barcode': '8690504015727', 'color': 0xFF1565C0, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Ulker Hanımeller', 'barcode': '8690504016427', 'color': 0xFF7B1FA2, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Oreo', 'barcode': '7622210449283', 'color': 0xFF212121, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Ulker Dido', 'barcode': '8690769030019', 'color': 0xFF4E342E, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Eti Burcak', 'barcode': '8690526610007', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'McVities Digestive', 'barcode': '5000168201118', 'color': 0xFF795548, 'category': 'Bisküvi'},
+    {'emoji': '🥨', 'name': 'Eti Crax', 'barcode': '8690526195014', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
     // Atıştırmalık
     {'emoji': '🍟', 'name': 'Pringles', 'barcode': '5053990108812', 'color': 0xFFE53935, 'category': 'Atıştırmalık'},
     {'emoji': '🍟', 'name': 'Lays', 'barcode': '4890008100309', 'color': 0xFFFFD600, 'category': 'Atıştırmalık'},
     {'emoji': '🍟', 'name': 'Eti Cips', 'barcode': '8690526013544', 'color': 0xFFFF8F00, 'category': 'Atıştırmalık'},
-    // Kahvaltılık & Tahıl
-    {'emoji': '🥣', 'name': 'Quaker Yulaf', 'barcode': '8710398100078', 'color': 0xFF795548, 'category': 'Saglikli'},
-    {'emoji': '🥣', 'name': 'Cornflakes', 'barcode': '5053827148865', 'color': 0xFFFF8F00, 'category': 'Saglikli'},
-    {'emoji': '🥣', 'name': 'Nestle Fitness', 'barcode': '7613036251471', 'color': 0xFFE53935, 'category': 'Saglikli'},
-    {'emoji': '🍝', 'name': 'Barilla Spagetti', 'barcode': '8076802085738', 'color': 0xFF1565C0, 'category': 'Saglikli'},
-    {'emoji': '🧘', 'name': 'Activia Yogurt', 'barcode': '3228857000166', 'color': 0xFF2E7D32, 'category': 'Saglikli'},
-    // Sos
-    {'emoji': '🍅', 'name': 'Heinz Ketcap', 'barcode': '0013000006408', 'color': 0xFFE53935, 'category': 'Sos'},
-    {'emoji': '🍫', 'name': 'Ulker Kremali', 'barcode': '8690769050023', 'color': 0xFF4E342E, 'category': 'Tatli'},
+    {'emoji': '🍬', 'name': 'Haribo', 'barcode': '4001686325988', 'color': 0xFFFFD600, 'category': 'Atıştırmalık'},
+    // Sağlıklı
+    {'emoji': '🥣', 'name': 'Quaker Yulaf', 'barcode': '8710398100078', 'color': 0xFF795548, 'category': 'Sağlıklı'},
+    {'emoji': '🥣', 'name': 'Cornflakes', 'barcode': '5053827148865', 'color': 0xFFFF8F00, 'category': 'Sağlıklı'},
+    {'emoji': '🥣', 'name': 'Nestle Fitness', 'barcode': '7613036251471', 'color': 0xFFE53935, 'category': 'Sağlıklı'},
+    {'emoji': '🍝', 'name': 'Barilla Spagetti', 'barcode': '8076802085738', 'color': 0xFF1565C0, 'category': 'Sağlıklı'},
+    {'emoji': '🧘', 'name': 'Activia Yogurt', 'barcode': '3228857000166', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
+    {'emoji': '🌱', 'name': 'Alpro Soya', 'barcode': '5411188108085', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
   ];
+
+  final Map<String, Map<String, dynamic>> _categories = {
+    'İçecek': {'icon': Icons.local_cafe_rounded, 'color': 0xFF0288D1},
+    'Süt Ürünleri': {'icon': Icons.water_drop_rounded, 'color': 0xFF00897B},
+    'Çikolata': {'icon': Icons.cake_rounded, 'color': 0xFF6D4C41},
+    'Bisküvi': {'icon': Icons.cookie_rounded, 'color': 0xFFFF8F00},
+    'Atıştırmalık': {'icon': Icons.local_pizza_rounded, 'color': 0xFFE53935},
+    'Sağlıklı': {'icon': Icons.eco_rounded, 'color': 0xFF2E7D32},
+  };
+
+  String? _selectedCategory;
 
   @override
   void dispose() {
-    _manualController.dispose();
+    _barcodeController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   List<Map<String, dynamic>> get _filteredProducts {
-    if (_searchQuery.isEmpty) return _allProducts;
-    return _allProducts.where((p) =>
-      p['name'].toString().toLowerCase().contains(_searchQuery.toLowerCase()) ||
-      p['category'].toString().toLowerCase().contains(_searchQuery.toLowerCase())
-    ).toList();
-  }
-
-  Map<String, List<Map<String, dynamic>>> get _groupedProducts {
-    final Map<String, List<Map<String, dynamic>>> groups = {};
-    for (final product in _filteredProducts) {
-      final category = product['category'] as String;
-      groups.putIfAbsent(category, () => []);
-      groups[category]!.add(product);
+    var products = _allProducts;
+    if (_selectedCategory != null) {
+      products = products.where((p) => p['category'] == _selectedCategory).toList();
     }
-    return groups;
+    if (_searchQuery.isNotEmpty) {
+      products = products.where((p) =>
+        p['name'].toString().toLowerCase().contains(_searchQuery.toLowerCase())
+      ).toList();
+    }
+    return products;
   }
 
   void _navigateToDetail(String barcode) {
     Navigator.pushNamed(context, '/product-detail', arguments: barcode);
   }
 
-  void _submitManual() {
-    final code = _manualController.text.trim();
+  void _submitBarcode() {
+    final code = _barcodeController.text.trim();
     if (code.isEmpty) return;
     _navigateToDetail(code);
   }
@@ -109,186 +109,311 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).primaryColor;
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [primary, primary.withValues(alpha: 0.7)],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(Icons.arrow_back, color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    const AppLogo(size: 32),
-                    const Spacer(),
-                    Text('${_allProducts.length} Urun',
-                      style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12)),
-                  ],
-                ),
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: CustomScrollView(
+        slivers: [
+          // Header
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: primary,
+            automaticallyImplyLeading: false,
+            title: Text('Ürün Tarayıcı',
+              style: GoogleFonts.poppins(
+                color: Colors.white, fontSize: 18,
+                fontWeight: FontWeight.w600)),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.history_rounded, color: Colors.white),
+                onPressed: () => Navigator.pushNamed(context, '/history'),
               ),
-              const Text('📷', style: TextStyle(fontSize: 48)),
-              const SizedBox(height: 8),
-              const Text('Urun Tarayici',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 4),
-              Text('Barkod gir veya listeden sec',
-                style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 13)),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF5F7FA),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+            ],
+          ),
+
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+
+                // Arama
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 8)],
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (val) => setState(() => _searchQuery = val),
+                    decoration: InputDecoration(
+                      hintText: 'Ürün adı ile ara',
+                      hintStyle: GoogleFonts.poppins(
+                        color: Colors.grey.shade400, fontSize: 14),
+                      prefixIcon: Icon(Icons.search_rounded,
+                        color: Colors.grey.shade400),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
                     ),
                   ),
+                ),
+                const SizedBox(height: 12),
+
+                // Barkod Sorgula
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 8)],
+                  ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _manualController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      hintText: 'Barkod numarasi girin...',
-                                      prefixIcon: const Icon(Icons.qr_code),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    onSubmitted: (_) => _submitManual(),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                  onPressed: _submitManual,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: primary,
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                  child: const Icon(Icons.search),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            TextField(
-                              onChanged: (val) => setState(() => _searchQuery = val),
+                      Row(
+                        children: [
+                          Icon(Icons.qr_code_rounded, color: primary, size: 20),
+                          const SizedBox(width: 8),
+                          Text('Barkod Sorgula',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600, fontSize: 14,
+                              color: primary)),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _barcodeController,
+                              keyboardType: TextInputType.number,
+                              onSubmitted: (_) => _submitBarcode(),
                               decoration: InputDecoration(
-                                hintText: 'Urun ara...',
-                                prefixIcon: const Icon(Icons.search),
+                                hintText: 'Barkod numarasını girin',
+                                hintStyle: GoogleFonts.poppins(
+                                  color: Colors.grey.shade400, fontSize: 13),
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: const Color(0xFFF5F7FA),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none,
-                                ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 12),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: _groupedProducts.length,
-                          itemBuilder: (context, groupIndex) {
-                            final category = _groupedProducts.keys.elementAt(groupIndex);
-                            final products = _groupedProducts[category]!;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8),
-                                  child: Text(category,
-                                    style: TextStyle(
-                                      fontSize: 13, fontWeight: FontWeight.bold, color: primary)),
-                                ),
-                                GridView.count(
-                                  crossAxisCount: 2,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                  childAspectRatio: 2.8,
-                                  children: products.map((p) =>
-                                    _buildProductChip(p['emoji'], p['name'], p['barcode'], Color(p['color']))).toList(),
-                                ),
-                                const SizedBox(height: 8),
-                              ],
-                            );
-                          },
-                        ),
+                          ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: _submitBarcode,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primary,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                              elevation: 0,
+                            ),
+                            child: Text('Bul',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600)),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+                const SizedBox(height: 24),
 
-  Widget _buildProductChip(String emoji, String name, String barcode, Color color) {
-    return GestureDetector(
-      onTap: () => _navigateToDetail(barcode),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 4, offset: const Offset(0, 2))],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 42, height: double.infinity,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
-              ),
-              child: Center(child: Text(emoji, style: const TextStyle(fontSize: 18))),
+                // Kategoriler
+                if (_searchQuery.isEmpty) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Kategoriler',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16, fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1B1B1B))),
+                      GestureDetector(
+                        onTap: () => setState(() => _selectedCategory = null),
+                        child: Text('Hepsini Gör',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13, color: primary,
+                            fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1.8,
+                    children: _categories.entries.map((entry) {
+                      final isSelected = _selectedCategory == entry.key;
+                      final color = Color(entry.value['color'] as int);
+                      return GestureDetector(
+                        onTap: () => setState(() =>
+                          _selectedCategory = isSelected ? null : entry.key),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isSelected
+                              ? color.withValues(alpha: 0.15)
+                              : Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            border: isSelected
+                              ? Border.all(color: color, width: 2)
+                              : null,
+                            boxShadow: [BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 8)],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: color.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    entry.value['icon'] as IconData,
+                                    color: color, size: 20),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(entry.key,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                      color: const Color(0xFF1B1B1B))),
+                                ),
+                                Icon(Icons.arrow_forward_ios_rounded,
+                                  size: 12, color: Colors.grey.shade400),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+
+                // Ürünler
+                if (_selectedCategory != null || _searchQuery.isNotEmpty) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_selectedCategory ?? 'Arama Sonuçları',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
+                      GestureDetector(
+                        onTap: () => setState(() {
+                          _selectedCategory = null;
+                          _searchQuery = '';
+                          _searchController.clear();
+                        }),
+                        child: Text('Temizle',
+                          style: GoogleFonts.poppins(
+                            color: primary, fontSize: 13)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  ..._filteredProducts.map((p) => GestureDetector(
+                    onTap: () => _navigateToDetail(p['barcode']),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 6)],
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 44, height: 44,
+                            decoration: BoxDecoration(
+                              color: Color(p['color']).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(child: Text(p['emoji'],
+                              style: const TextStyle(fontSize: 22))),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(p['name'],
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600, fontSize: 14)),
+                          ),
+                          Icon(Icons.arrow_forward_ios_rounded,
+                            size: 14, color: Colors.grey.shade400),
+                        ],
+                      ),
+                    ),
+                  )),
+                  const SizedBox(height: 16),
+                ],
+
+                // AI Analizi kartı
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: primary.withValues(alpha: 0.2)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('AI Analizi',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold, fontSize: 15,
+                          color: primary)),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Ürünlerin içindeki gizli şeker ve katkı maddelerini saniyeler içinde öğrenin.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12, color: Colors.grey.shade600,
+                          height: 1.4)),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: primary,
+                          side: BorderSide(color: primary),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        ),
+                        child: Text('Nasıl Çalışır?',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600, fontSize: 13)),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ]),
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(name,
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 11),
-                overflow: TextOverflow.ellipsis, maxLines: 1),
-            ),
-            Icon(Icons.chevron_right, size: 14, color: Colors.grey.shade400),
-            const SizedBox(width: 4),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
