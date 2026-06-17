@@ -183,21 +183,105 @@ def analyze(req: AnalyzeRequest):
             positives.append(f"Saglikli icerik: {kw}")
             health_score = min(100, health_score + 3)
 
-    # Diyet kontrolu
+    # Kapsamli Diyet Kontrolu
     if req.user_diet and req.user_diet != '':
-        diet_warnings = {
-            'Vegan': ['et', 'tavuk', 'balik', 'sut', 'yumurta', 'honey', 'bal', 'meat', 'chicken', 'fish', 'milk', 'egg'],
-            'Vejetaryen': ['et', 'tavuk', 'balik', 'meat', 'chicken', 'fish'],
-            'Glutensiz': ['bugday', 'gluten', 'wheat', 'barley', 'rye', 'arpa', 'cavdar'],
-            'Keto': ['seker', 'sugar', 'nisan', 'starch', 'glucose'],
+        ing_lower = (req.ingredients or '').lower()
+        
+        diet_ingredient_rules = {
+            'Vegan': [
+                ('et', 'Et iceriyor - Vegan diyete uygun degil!'),
+                ('meat', 'Et iceriyor - Vegan diyete uygun degil!'),
+                ('tavuk', 'Tavuk iceriyor - Vegan diyete uygun degil!'),
+                ('chicken', 'Tavuk iceriyor - Vegan diyete uygun degil!'),
+                ('balik', 'Balik iceriyor - Vegan diyete uygun degil!'),
+                ('fish', 'Balik iceriyor - Vegan diyete uygun degil!'),
+                ('sut', 'Sut urunleri iceriyor - Vegan diyete uygun degil!'),
+                ('milk', 'Sut urunleri iceriyor - Vegan diyete uygun degil!'),
+                ('yumurta', 'Yumurta iceriyor - Vegan diyete uygun degil!'),
+                ('egg', 'Yumurta iceriyor - Vegan diyete uygun degil!'),
+                ('bal', 'Bal iceriyor - Vegan diyete uygun degil!'),
+                ('honey', 'Bal iceriyor - Vegan diyete uygun degil!'),
+                ('jelatin', 'Jelatin iceriyor - Vegan diyete uygun degil!'),
+                ('gelatin', 'Jelatin iceriyor - Vegan diyete uygun degil!'),
+            ],
+            'Vejetaryen': [
+                ('et', 'Et iceriyor - Vejetaryen diyete uygun degil!'),
+                ('meat', 'Et iceriyor - Vejetaryen diyete uygun degil!'),
+                ('tavuk', 'Tavuk iceriyor - Vejetaryen diyete uygun degil!'),
+                ('chicken', 'Tavuk iceriyor - Vejetaryen diyete uygun degil!'),
+                ('balik', 'Balik iceriyor - Vejetaryen diyete uygun degil!'),
+                ('fish', 'Balik iceriyor - Vejetaryen diyete uygun degil!'),
+                ('jelatin', 'Jelatin iceriyor - Vejetaryen diyete uygun degil!'),
+                ('gelatin', 'Jelatin iceriyor - Vejetaryen diyete uygun degil!'),
+            ],
+            'Glutensiz': [
+                ('bugday', 'Bugday iceriyor - Glutensiz diyete uygun degil!'),
+                ('wheat', 'Bugday iceriyor - Glutensiz diyete uygun degil!'),
+                ('gluten', 'Gluten iceriyor - Glutensiz diyete uygun degil!'),
+                ('arpa', 'Arpa iceriyor - Glutensiz diyete uygun degil!'),
+                ('barley', 'Arpa iceriyor - Glutensiz diyete uygun degil!'),
+                ('cavdar', 'Cavdar iceriyor - Glutensiz diyete uygun degil!'),
+                ('rye', 'Cavdar iceriyor - Glutensiz diyete uygun degil!'),
+                ('irmik', 'Irmik iceriyor - Glutensiz diyete uygun degil!'),
+            ],
+            'Keto': [
+                ('seker', 'Seker iceriyor - Keto diyete uygun degil!'),
+                ('sugar', 'Seker iceriyor - Keto diyete uygun degil!'),
+                ('nisasta', 'Nisasta iceriyor - Keto diyete uygun degil!'),
+                ('starch', 'Nisasta iceriyor - Keto diyete uygun degil!'),
+                ('glikoz surubu', 'Glikoz surubu iceriyor - Keto diyete uygun degil!'),
+                ('corn syrup', 'Misir surubu iceriyor - Keto diyete uygun degil!'),
+            ],
         }
-        if req.user_diet in diet_warnings:
-            ing_lower = (req.ingredients or '').lower()
-            for keyword in diet_warnings[req.user_diet]:
+
+        nutrient_rules = {
+            'Sporcu': [
+                (req.sugar_100g > 15, 'Yuksek seker ({}g/100g) - Sporcu performansi icin ideal degil!'.format(req.sugar_100g), 10),
+                (req.protein_100g < 5, 'Dusuk protein ({}g/100g) - Sporcu icin yetersiz protein!'.format(req.protein_100g), 5),
+                (req.fat_100g > 25, 'Yuksek yag ({}g/100g) - Sporcu beslenmesi icin fazla!'.format(req.fat_100g), 8),
+                (req.salt_100g > 2, 'Cok yuksek tuz ({}g/100g) - Sporcu icin dikkat!'.format(req.salt_100g), 5),
+            ],
+            'Diyabet': [
+                (req.sugar_100g > 5, 'Yuksek seker ({}g/100g) - Kan seker dengesini bozabilir!'.format(req.sugar_100g), 20),
+                (req.energy_100g > 400, 'Yuksek kalori ({} kcal) - Kilo kontrolu zorlasiyor!'.format(req.energy_100g), 5),
+            ],
+            'Kalp Sagligi': [
+                (req.salt_100g > 1.5, 'Yuksek tuz ({}g/100g) - Tansiyon ve kalp sagligi icin zararli!'.format(req.salt_100g), 15),
+                (req.fat_100g > 20, 'Yuksek yag ({}g/100g) - Kalp sagligi icin dikkat!'.format(req.fat_100g), 10),
+                (req.sugar_100g > 20, 'Yuksek seker ({}g/100g) - Kalp sagligi icin dikkat!'.format(req.sugar_100g), 8),
+            ],
+            'Dusuk Kalori': [
+                (req.energy_100g > 300, 'Yuksek kalori ({} kcal/100g) - Dusuk kalorili diyet icin uygun degil!'.format(req.energy_100g), 15),
+                (req.fat_100g > 15, 'Yuksek yag ({}g/100g) - Kalori kontrolu icin dikkat!'.format(req.fat_100g), 8),
+                (req.sugar_100g > 10, 'Yuksek seker ({}g/100g) - Gereksiz kalori ekler!'.format(req.sugar_100g), 5),
+            ],
+            'Keto': [
+                (req.sugar_100g > 5, 'Yuksek seker ({}g/100g) - Keto diyetinde seker cok dusuk olmali!'.format(req.sugar_100g), 15),
+            ],
+        }
+
+        diet_warning_added = False
+
+        # Icerik bazli kontrol
+        if req.user_diet in diet_ingredient_rules:
+            for keyword, msg in diet_ingredient_rules[req.user_diet]:
                 if keyword in ing_lower:
-                    warnings.append(f"{req.user_diet} diyetine uygun degil: {keyword} iceriyor!")
-                    health_score = max(0, health_score - 15)
+                    warnings.append('⚠️ ' + msg)
+                    health_score = max(0, health_score - 25)
+                    diet_warning_added = True
                     break
+
+        # Besin degeri bazli kontrol
+        if req.user_diet in nutrient_rules:
+            for condition, msg, penalty in nutrient_rules[req.user_diet]:
+                if condition:
+                    warnings.append('⚠️ ' + msg)
+                    health_score = max(0, health_score - penalty)
+                    diet_warning_added = True
+
+        # Diyete uygunsa pozitif mesaj
+        if not diet_warning_added:
+            positives.append('✅ ' + req.user_diet + ' diyetine uygun gorunuyor!')
 
     # Alerjen kontrolu
     for ua in (req.user_allergens or []):
