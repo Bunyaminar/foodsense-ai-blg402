@@ -101,7 +101,7 @@ def build_features(req, detected_high, detected_medium, detected_low):
 
 @app.get("/")
 def root():
-    return {"message": "FoodsenseAI ML API", "status": "running"}
+    return {"message": "FoodsenseAI ML API", "status": "running", "version": "2.0"}
 
 @app.get("/health")
 def health_check():
