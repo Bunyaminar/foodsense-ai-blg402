@@ -79,50 +79,103 @@ const String aiApiUrl = 'https://foodsense-ai-blg402-production.up.railway.app';
 // Basit ingredient cevirisi
 String translateIngredients(String ingredients) {
   final translations = {
-    'sugar': 'seker', 'water': 'su', 'salt': 'tuz', 'flour': 'un',
+    // Temel malzemeler
+    'water': 'su', 'sugar': 'seker', 'salt': 'tuz', 'flour': 'un',
     'wheat flour': 'bugday unu', 'whole wheat flour': 'tam bugday unu',
+    'whole grain wheat flour': 'tam tahilli bugday unu',
+    'refined wheat flour': 'rafine bugday unu',
+    // Yaglar
     'palm oil': 'palm yagi', 'sunflower oil': 'aycicek yagi',
-    'vegetable oil': 'bitkisel yag', 'cocoa butter': 'kakao yagi',
-    'cocoa powder': 'kakao tozu', 'cocoa mass': 'kakao kitligi',
+    'vegetable oil': 'bitkisel yag', 'olive oil': 'zeytinyagi',
+    'rapeseed oil': 'kanola yagi', 'coconut oil': 'hindistan cevizi yagi',
+    'cocoa butter': 'kakao yagi', 'shea butter': 'shea yagi',
+    'butter': 'tereyagi', 'margarine': 'margarin',
+    // Sut urunleri
     'milk': 'sut', 'skimmed milk': 'yagsiz sut', 'whole milk': 'tam yag sut',
-    'butter': 'tereyagi', 'cream': 'krema', 'whey': 'peynir alti suyu',
+    'semi-skimmed milk': 'yari yagsiz sut', 'condensed milk': 'sutlu krema',
+    'cream': 'krema', 'whey': 'peynir alti suyu', 'lactose': 'laktoz',
+    'milk powder': 'sut tozu', 'skimmed milk powder': 'yagsiz sut tozu',
+    'buttermilk': 'ayran', 'yogurt': 'yogurt', 'cheese': 'peynir',
+    // Yumurta
     'egg': 'yumurta', 'eggs': 'yumurta', 'egg white': 'yumurta aki',
-    'yeast': 'maya', 'baking powder': 'kabartma tozu',
-    'vanilla': 'vanilya', 'vanilla extract': 'vanilya ekstre',
-    'chocolate': 'cikolata', 'dark chocolate': 'bitter cikolata',
-    'milk chocolate': 'sutlu cikolata', 'white chocolate': 'beyaz cikolata',
+    'egg yolk': 'yumurta sarisi', 'dried egg': 'kurutulmus yumurta',
+    // Kakao ve cikolata
+    'cocoa powder': 'kakao tozu', 'cocoa mass': 'kakao kitligi',
+    'cocoa': 'kakao', 'chocolate': 'cikolata',
+    'dark chocolate': 'bitter cikolata', 'milk chocolate': 'sutlu cikolata',
+    'white chocolate': 'beyaz cikolata',
+    // Kuruyemis
     'hazelnut': 'findik', 'almond': 'badem', 'peanut': 'yer fistigi',
     'walnut': 'ceviz', 'cashew': 'kaju', 'pistachio': 'antep fistigi',
-    'corn starch': 'misir nisastasi', 'starch': 'nisasta',
-    'glucose': 'glikoz', 'fructose': 'fruktoz', 'lactose': 'laktoz',
-    'maltose': 'maltoz', 'glucose syrup': 'glikoz surubu',
-    'corn syrup': 'misir surubu', 'honey': 'bal', 'maple syrup': 'akcaagac surubu',
+    'pecan': 'pekan cevizi', 'macadamia': 'macadamia',
+    'hazelnut paste': 'findik ezmesi', 'almond paste': 'badem ezmesi',
+    // Nisasta ve tahil
+    'corn starch': 'misir nisastasi', 'wheat starch': 'bugday nisastasi',
+    'starch': 'nisasta', 'modified starch': 'modifiye nisasta',
+    'rice': 'pirinc', 'oat': 'yulaf', 'oats': 'yulaf',
+    'barley': 'arpa', 'rye': 'cavdar', 'corn': 'misir',
+    'maize': 'misir', 'semolina': 'irmik',
+    // Seker turleri
+    'glucose': 'glikoz', 'fructose': 'fruktoz', 'maltose': 'maltoz',
+    'glucose syrup': 'glikoz surubu', 'corn syrup': 'misir surubu',
+    'honey': 'bal', 'maple syrup': 'akcaagac surubu',
+    'molasses': 'melás', 'treacle': 'pekmez', 'invert sugar': 'invert seker',
+    'caramel': 'karamel', 'brown sugar': 'kahverengi seker',
+    'icing sugar': 'pudra sekeri', 'caster sugar': 'ince seker',
+    // Asitler ve koruyucular
     'citric acid': 'sitrik asit', 'lactic acid': 'laktik asit',
-    'acetic acid': 'asetik asit', 'ascorbic acid': 'askorbik asit',
+    'acetic acid': 'asetik asit', 'ascorbic acid': 'c vitamini',
+    'tartaric acid': 'tartarik asit', 'malic acid': 'malik asit',
+    'phosphoric acid': 'fosforik asit', 'sorbic acid': 'sorbik asit',
+    'benzoic acid': 'benzoik asit',
+    // Emulgatörler
     'lecithin': 'lesitim', 'soy lecithin': 'soya lesitini',
-    'emulsifier': 'emulsifier', 'stabilizer': 'stabilizator',
-    'preservative': 'koruyucu', 'antioxidant': 'antioksidan',
-    'colorant': 'renk maddesi', 'flavor': 'aroma', 'flavoring': 'aroma maddesi',
-    'natural flavor': 'dogal aroma', 'artificial flavor': 'yapay aroma',
+    'sunflower lecithin': 'aycicek lesitini',
+    'mono and diglycerides': 'mono ve digliseridler',
+    'mono- and diglycerides': 'mono ve digliseridler',
+    // Aromalar
+    'natural flavor': 'dogal aroma', 'natural flavors': 'dogal aromalar',
+    'artificial flavor': 'yapay aroma', 'vanilla flavor': 'vanilya aromasi',
+    'flavor': 'aroma', 'flavoring': 'aroma maddesi',
+    'vanilla': 'vanilya', 'vanilla extract': 'vanilya ekstre',
+    'vanillin': 'vanilin',
+    // Bitkiler ve baharatlar
     'tomato': 'domates', 'tomato paste': 'domates salcasi',
     'onion': 'sogan', 'garlic': 'sarimsak', 'pepper': 'biber',
+    'black pepper': 'karabiber', 'white pepper': 'beyaz biber',
     'paprika': 'kirmizi biber', 'cumin': 'kimyon', 'oregano': 'kekik',
-    'cinnamon': 'tarçin', 'ginger': 'zencefil', 'turmeric': 'zerdeçal',
-    'rice': 'pirinç', 'oat': 'yulaf', 'barley': 'arpa', 'rye': 'çavdar',
-    'soy': 'soya', 'soybean': 'soya fasulyesi', 'soy protein': 'soya proteini',
+    'thyme': 'kekik', 'rosemary': 'biberiye', 'basil': 'fesleyen',
+    'cinnamon': 'tarcin', 'ginger': 'zencefil', 'turmeric': 'zerdeçal',
+    'coriander': 'kisnis', 'cardamom': 'kakule', 'clove': 'karanfil',
+    'nutmeg': 'muskat', 'bay leaf': 'defne yapragi',
+    // Proteinler
+    'soy protein': 'soya proteini', 'wheat protein': 'bugday proteini',
     'whey protein': 'peynir alti suyu proteini', 'protein': 'protein',
-    'fiber': 'lif', 'calcium': 'kalsiyum', 'iron': 'demir',
-    'vitamin': 'vitamin', 'mineral': 'mineral',
-    'modified starch': 'modifiye nisasta', 'gelatin': 'jelatin',
+    'gluten': 'gluten', 'soy': 'soya', 'soybean': 'soya fasulyesi',
+    // Vitaminler ve mineraller
+    'vitamin c': 'c vitamini', 'vitamin e': 'e vitamini',
+    'vitamin d': 'd vitamini', 'vitamin b': 'b vitamini',
+    'calcium': 'kalsiyum', 'iron': 'demir', 'zinc': 'cinko',
+    'magnesium': 'magnezyum', 'potassium': 'potasyum',
+    'sodium': 'sodyum', 'phosphorus': 'fosfor',
+    // Diger
+    'yeast': 'maya', 'baking powder': 'kabartma tozu',
+    'baking soda': 'karbonat', 'gelatin': 'jelatin',
     'pectin': 'pektin', 'carrageenan': 'karragenan',
-    'sodium': 'sodyum', 'potassium': 'potasyum', 'magnesium': 'magnezyum',
-    'phosphate': 'fosfat', 'carbonate': 'karbonat',
-    'bicarbonate': 'bikarbonat', 'nitrate': 'nitrat', 'nitrite': 'nitrit',
-    'benzoate': 'benzoat', 'sorbate': 'sorbat',
-    'mono and diglycerides': 'mono ve digliseridler',
+    'agar': 'agar', 'xanthan gum': 'ksantan sakizi',
+    'guar gum': 'guar sakizi', 'locust bean gum': 'keciboynuzu sakizi',
+    'fiber': 'lif', 'inulin': 'inulin',
+    'coloring': 'renklendirici', 'colour': 'renklendirici',
+    'color': 'renklendirici', 'dye': 'boya',
+    'preservative': 'koruyucu', 'antioxidant': 'antioksidan',
+    'stabilizer': 'stabilizator', 'emulsifier': 'emulgatör',
+    'thickener': 'kalinlastirici', 'sweetener': 'tatlandirici',
+    'acidity regulator': 'asitlik duzenleyici',
+    'raising agent': 'kabartici', 'humectant': 'nemlendirici',
+    // Baglaçlar
+    'and': 've', 'or': 'veya', 'with': 'ile',
     'contains': 'icerir', 'may contain': 'iz miktarda icerebilir',
-    'traces of': 'iz miktarda', 'and': 've', 'or': 'veya',
-    'with': 'ile', 'from': 'kaynakli', 'of': '',
+    'traces of': 'iz miktarda', 'from': 'kaynakli',
   };
 
   String result = ingredients.toLowerCase();
@@ -140,7 +193,44 @@ String translateIngredients(String ingredients) {
 class FoodApiService {
   static const String _baseUrl = 'https://world.openfoodfacts.org/api/v0/product';
 
+  // Once Firestore'daki Turk urunlerine bak
+  static Future<ProductModel?> getTurkishProduct(String barcode) async {
+    try {
+      final doc = await FirebaseFirestore.instance
+        .collection('turkish_products')
+        .doc(barcode)
+        .get();
+      
+      if (doc.exists) {
+        final data = doc.data()!;
+        final nutrients = data['nutrients'] as Map<String, dynamic>?;
+        return ProductModel(
+          barcode: barcode,
+          name: data['name'] ?? '',
+          brand: data['brand'],
+          ingredients: data['ingredients'],
+          nutrients: nutrients != null ? {
+            'energy': nutrients['energy'],
+            'sugars': nutrients['sugars'],
+            'fat': nutrients['fat'],
+            'salt': nutrients['salt'],
+            'protein': nutrients['protein'],
+            'fiber': nutrients['fiber'],
+            'carbohydrates': nutrients['carbohydrates'],
+          } : null,
+          allergens: List<String>.from(data['allergens'] ?? []),
+        );
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   static Future<ProductModel?> getProductByBarcode(String barcode) async {
+    // Once Turk urunleri veritabanina bak
+    final turkishProduct = await getTurkishProduct(barcode);
+    if (turkishProduct != null) return turkishProduct;
     try {
       final url = Uri.parse('$_baseUrl/$barcode.json');
       final response = await http.get(
