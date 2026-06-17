@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../domain/providers/auth_provider.dart';
 import '../../widgets/common/app_logo.dart';
 
@@ -14,6 +16,32 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   final List<String> _selectedAllergies = [];
   String? _selectedDiet;
   bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) return;
+      final doc = await FirebaseFirestore.instance
+        .collection('users').doc(uid)
+        .collection('profile').doc('preferences')
+        .get();
+      if (doc.exists && mounted) {
+        setState(() {
+          final data = doc.data()!;
+          _selectedAllergies.clear();
+          _selectedAllergies.addAll(
+            List<String>.from(data['allergies'] ?? []));
+          _selectedDiet = data['dietType'];
+        });
+      }
+    } catch (e) {}
+  }
 
   final List<Map<String, String>> _allergies = [
     {'emoji': '🌾', 'name': 'Gluten'},
@@ -231,22 +259,37 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   child: ElevatedButton(
                     onPressed: _isSaving ? null : () async {
                       setState(() => _isSaving = true);
-                      await Future.delayed(const Duration(milliseconds: 800));
-                      if (mounted) {
-                        setState(() => _isSaving = false);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Row(children: [
-                              Icon(Icons.check_circle, color: Colors.white),
-                              SizedBox(width: 8),
-                              Text('Tercihler kaydedildi!'),
-                            ]),
-                            backgroundColor: Theme.of(context).primaryColor,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                        );
-                        Navigator.pop(context);
+                      try {
+                        final uid = FirebaseAuth.instance.currentUser?.uid;
+                        if (uid != null) {
+                          await FirebaseFirestore.instance
+                            .collection('users').doc(uid)
+                            .collection('profile').doc('preferences')
+                            .set({
+                              'allergies': _selectedAllergies,
+                              'dietType': _selectedDiet,
+                              'updatedAt': FieldValue.serverTimestamp(),
+                            });
+                        }
+                        if (mounted) {
+                          setState(() => _isSaving = false);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Row(children: [
+                                Icon(Icons.check_circle, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text('Tercihler kaydedildi!'),
+                              ]),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+                      } catch (e) {
+                        if (mounted) setState(() => _isSaving = false);
                       }
                     },
                     style: ElevatedButton.styleFrom(

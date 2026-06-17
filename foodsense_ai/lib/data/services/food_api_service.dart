@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
   final String barcode;
@@ -58,8 +60,12 @@ class ProductModel {
             'Bilinmeyen Urun',
       brand: product['brands'],
       imageUrl: product['image_front_url'],
-      ingredients: product['ingredients_text_tr'] ?? 
-                   product['ingredients_text'],
+      ingredients: product['ingredients_text_tr'] != null && 
+                   product['ingredients_text_tr'].toString().isNotEmpty
+                   ? product['ingredients_text_tr']
+                   : product['ingredients_text'] != null 
+                   ? translateIngredients(product['ingredients_text'])
+                   : null,
       nutrients: nutrients,
       allergens: allergenList,
       nutriScore: product['nutriscore_score'],
@@ -69,6 +75,67 @@ class ProductModel {
 }
 
 const String aiApiUrl = 'https://foodsense-ai-blg402-production.up.railway.app';
+
+// Basit ingredient cevirisi
+String translateIngredients(String ingredients) {
+  final translations = {
+    'sugar': 'seker', 'water': 'su', 'salt': 'tuz', 'flour': 'un',
+    'wheat flour': 'bugday unu', 'whole wheat flour': 'tam bugday unu',
+    'palm oil': 'palm yagi', 'sunflower oil': 'aycicek yagi',
+    'vegetable oil': 'bitkisel yag', 'cocoa butter': 'kakao yagi',
+    'cocoa powder': 'kakao tozu', 'cocoa mass': 'kakao kitligi',
+    'milk': 'sut', 'skimmed milk': 'yagsiz sut', 'whole milk': 'tam yag sut',
+    'butter': 'tereyagi', 'cream': 'krema', 'whey': 'peynir alti suyu',
+    'egg': 'yumurta', 'eggs': 'yumurta', 'egg white': 'yumurta aki',
+    'yeast': 'maya', 'baking powder': 'kabartma tozu',
+    'vanilla': 'vanilya', 'vanilla extract': 'vanilya ekstre',
+    'chocolate': 'cikolata', 'dark chocolate': 'bitter cikolata',
+    'milk chocolate': 'sutlu cikolata', 'white chocolate': 'beyaz cikolata',
+    'hazelnut': 'findik', 'almond': 'badem', 'peanut': 'yer fistigi',
+    'walnut': 'ceviz', 'cashew': 'kaju', 'pistachio': 'antep fistigi',
+    'corn starch': 'misir nisastasi', 'starch': 'nisasta',
+    'glucose': 'glikoz', 'fructose': 'fruktoz', 'lactose': 'laktoz',
+    'maltose': 'maltoz', 'glucose syrup': 'glikoz surubu',
+    'corn syrup': 'misir surubu', 'honey': 'bal', 'maple syrup': 'akcaagac surubu',
+    'citric acid': 'sitrik asit', 'lactic acid': 'laktik asit',
+    'acetic acid': 'asetik asit', 'ascorbic acid': 'askorbik asit',
+    'lecithin': 'lesitim', 'soy lecithin': 'soya lesitini',
+    'emulsifier': 'emulsifier', 'stabilizer': 'stabilizator',
+    'preservative': 'koruyucu', 'antioxidant': 'antioksidan',
+    'colorant': 'renk maddesi', 'flavor': 'aroma', 'flavoring': 'aroma maddesi',
+    'natural flavor': 'dogal aroma', 'artificial flavor': 'yapay aroma',
+    'tomato': 'domates', 'tomato paste': 'domates salcasi',
+    'onion': 'sogan', 'garlic': 'sarimsak', 'pepper': 'biber',
+    'paprika': 'kirmizi biber', 'cumin': 'kimyon', 'oregano': 'kekik',
+    'cinnamon': 'tarçin', 'ginger': 'zencefil', 'turmeric': 'zerdeçal',
+    'rice': 'pirinç', 'oat': 'yulaf', 'barley': 'arpa', 'rye': 'çavdar',
+    'soy': 'soya', 'soybean': 'soya fasulyesi', 'soy protein': 'soya proteini',
+    'whey protein': 'peynir alti suyu proteini', 'protein': 'protein',
+    'fiber': 'lif', 'calcium': 'kalsiyum', 'iron': 'demir',
+    'vitamin': 'vitamin', 'mineral': 'mineral',
+    'modified starch': 'modifiye nisasta', 'gelatin': 'jelatin',
+    'pectin': 'pektin', 'carrageenan': 'karragenan',
+    'sodium': 'sodyum', 'potassium': 'potasyum', 'magnesium': 'magnezyum',
+    'phosphate': 'fosfat', 'carbonate': 'karbonat',
+    'bicarbonate': 'bikarbonat', 'nitrate': 'nitrat', 'nitrite': 'nitrit',
+    'benzoate': 'benzoat', 'sorbate': 'sorbat',
+    'mono and diglycerides': 'mono ve digliseridler',
+    'contains': 'icerir', 'may contain': 'iz miktarda icerebilir',
+    'traces of': 'iz miktarda', 'and': 've', 'or': 'veya',
+    'with': 'ile', 'from': 'kaynakli', 'of': '',
+  };
+
+  String result = ingredients.toLowerCase();
+  translations.forEach((en, tr) {
+    result = result.replaceAll(en, tr);
+  });
+
+  // Ilk harfi buyut
+  if (result.isNotEmpty) {
+    result = result[0].toUpperCase() + result.substring(1);
+  }
+  return result;
+}
 
 class FoodApiService {
   static const String _baseUrl = 'https://world.openfoodfacts.org/api/v0/product';
@@ -99,6 +166,23 @@ class FoodApiService {
   static Future<Map<String, dynamic>?> analyzeWithAI(ProductModel product) async {
     try {
       final url = Uri.parse('https://foodsense-ai-blg402-production.up.railway.app/analyze');
+      // Kullanici tercihlerini Firestore'dan getir
+      List<String> userAllergens = [];
+      String? userDiet;
+      try {
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+        if (uid != null) {
+          final doc = await FirebaseFirestore.instance
+            .collection('users').doc(uid)
+            .collection('profile').doc('preferences')
+            .get();
+          if (doc.exists) {
+            userAllergens = List<String>.from(doc.data()?['allergies'] ?? []);
+            userDiet = doc.data()?['dietType'];
+          }
+        }
+      } catch (e) {}
+
       final body = {
         'name': product.name,
         'ingredients': product.ingredients ?? '',
@@ -110,7 +194,8 @@ class FoodApiService {
         'energy_100g': (product.nutrients?['energy'] ?? 0).toDouble(),
         'nova_group': 4,
         'allergens': product.allergens,
-        'user_allergens': [],
+        'user_allergens': userAllergens,
+        'user_diet': userDiet ?? '',
       };
       
       final response = await http.post(

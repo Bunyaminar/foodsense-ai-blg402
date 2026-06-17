@@ -300,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             style: TextStyle(color: Colors.white.withOpacity(0.7)),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () => Navigator.pushReplacementNamed(context, AppConstants.loginRoute),
                             child: const Text(
                               'Giriş Yapın',
                               style: TextStyle(

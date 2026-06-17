@@ -57,6 +57,45 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             home: const SplashScreen(),
+            onGenerateRoute: (settings) {
+              return PageRouteBuilder(
+                settings: settings,
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  final routes = {
+                    '/login': const LoginScreen(),
+                    '/register': const RegisterScreen(),
+                    '/dashboard': const DashboardScreen(),
+                    '/profile': const ProfileScreen(),
+                    '/preferences': const PreferencesScreen(),
+                    '/onboarding': const OnboardingScreen(),
+                    '/forgot-password': const ForgotPasswordScreen(),
+                    '/settings': const SettingsScreen(),
+                    '/favorites': const FavoritesScreen(),
+                    '/history': const HistoryScreen(),
+                    '/scanner': const ScannerScreen(),
+                    '/product-detail': const ProductDetailScreen(),
+                  };
+                  return routes[settings.name] ?? const SplashScreen();
+                },
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOutCubic;
+                  var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
+                  var fadeAnim = Tween<double>(begin: 0.0, end: 1.0)
+                    .chain(CurveTween(curve: curve));
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: FadeTransition(
+                      opacity: animation.drive(fadeAnim),
+                      child: child,
+                    ),
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 300),
+              );
+            },
             routes: {
               AppConstants.loginRoute: (context) => const LoginScreen(),
               AppConstants.registerRoute: (context) => const RegisterScreen(),

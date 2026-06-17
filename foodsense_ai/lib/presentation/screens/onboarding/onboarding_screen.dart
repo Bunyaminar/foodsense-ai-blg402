@@ -153,7 +153,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               curve: Curves.easeInOut,
                             );
                           } else {
-                            Navigator.pushReplacementNamed(context, '/login');
+                            Navigator.pushReplacementNamed(context, '/register');
                           }
                         },
                         style: ElevatedButton.styleFrom(

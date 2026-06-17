@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import '../../../data/services/favorites_service.dart';
 import '../../widgets/common/app_logo.dart';
 
@@ -137,7 +138,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     final item = _favorites[index];
-                    return Dismissible(
+                    return TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 300 + (index * 80)),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 30 * (1 - value)),
+                          child: Opacity(opacity: value, child: child),
+                        );
+                      },
+                      child: Dismissible(
                       key: Key(item.id),
                       direction: DismissDirection.endToStart,
                       onDismissed: (_) => _removeFavorite(item),
@@ -232,6 +243,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           ),
                         ),
                       ),
+                    ),
                     );
                   },
                   childCount: _favorites.length,

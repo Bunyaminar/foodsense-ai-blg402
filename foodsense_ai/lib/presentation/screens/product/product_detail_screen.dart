@@ -11,13 +11,34 @@ class ProductDetailScreen extends StatefulWidget {
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTickerProviderStateMixin {
   ProductModel? _product;
   bool _isLoading = true;
   bool _isAnalyzing = false;
   String? _error;
   Map<String, dynamic>? _aiResult;
   bool _isFavorite = false;
+  late AnimationController _heartController;
+  late Animation<double> _heartAnimation;
+  late AnimationController _scoreController;
+  late Animation<int> _scoreAnimation;
+  int _displayScore = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _heartController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 300));
+    _heartAnimation = Tween<double>(begin: 1.0, end: 1.4).animate(
+      CurvedAnimation(parent: _heartController, curve: Curves.elasticOut));
+    _scoreController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1500));
+    _scoreAnimation = IntTween(begin: 0, end: 0).animate(
+      CurvedAnimation(parent: _scoreController, curve: Curves.easeOut))
+      ..addListener(() {
+        if (mounted) setState(() => _displayScore = _scoreAnimation.value);
+      });
+  }
 
   @override
   void didChangeDependencies() {
@@ -43,6 +64,132 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
   }
 
+  void _showManualAnalysisDialog() {
+    final nameCtrl = TextEditingController();
+    final sugarCtrl = TextEditingController();
+    final fatCtrl = TextEditingController();
+    final saltCtrl = TextEditingController();
+    final proteinCtrl = TextEditingController();
+    final fiberCtrl = TextEditingController();
+    final energyCtrl = TextEditingController();
+    final ingredientsCtrl = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            Container(width: 40, height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2))),
+            const SizedBox(height: 16),
+            const Text('Manuel Analiz', style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 4),
+            const Text('Besin degerlerini girerek AI analizi yapin',
+              style: TextStyle(fontSize: 12, color: Colors.grey)),
+            const Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    _buildManualField(nameCtrl, 'Urun Adi', Icons.label_outline),
+                    _buildManualField(energyCtrl, 'Enerji (kcal/100g)', Icons.local_fire_department_outlined, isNumber: true),
+                    _buildManualField(sugarCtrl, 'Seker (g/100g)', Icons.water_drop_outlined, isNumber: true),
+                    _buildManualField(fatCtrl, 'Yag (g/100g)', Icons.opacity_outlined, isNumber: true),
+                    _buildManualField(saltCtrl, 'Tuz (g/100g)', Icons.grain_outlined, isNumber: true),
+                    _buildManualField(proteinCtrl, 'Protein (g/100g)', Icons.fitness_center_outlined, isNumber: true),
+                    _buildManualField(fiberCtrl, 'Lif (g/100g)', Icons.grass_outlined, isNumber: true),
+                    _buildManualField(ingredientsCtrl, 'Icerik Listesi (opsiyonel)', Icons.list_outlined),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    Navigator.pop(ctx);
+                    final manualProduct = ProductModel(
+                      barcode: 'manual_${DateTime.now().millisecondsSinceEpoch}',
+                      name: nameCtrl.text.isEmpty ? 'Manuel Urun' : nameCtrl.text,
+                      ingredients: ingredientsCtrl.text.isEmpty ? null : ingredientsCtrl.text,
+                      nutrients: {
+                        'energy': double.tryParse(energyCtrl.text) ?? 0,
+                        'sugars': double.tryParse(sugarCtrl.text) ?? 0,
+                        'fat': double.tryParse(fatCtrl.text) ?? 0,
+                        'salt': double.tryParse(saltCtrl.text) ?? 0,
+                        'protein': double.tryParse(proteinCtrl.text) ?? 0,
+                        'fiber': double.tryParse(fiberCtrl.text) ?? 0,
+                      },
+                      allergens: [],
+                    );
+                    setState(() {
+                      _product = manualProduct;
+                      _error = null;
+                      _isLoading = false;
+                    });
+                    _analyzeWithAI();
+                  },
+                  icon: const Icon(Icons.analytics_rounded),
+                  label: const Text('AI ile Analiz Et',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E7D32),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14)),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildManualField(TextEditingController ctrl, String label,
+      IconData icon, {bool isNumber = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        controller: ctrl,
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, size: 20),
+          filled: true,
+          fillColor: Colors.grey.shade50,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF2E7D32), width: 1.5),
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _checkFavorite() async {
     if (_product == null) return;
     final isFav = await FavoritesService.isFavorite(_product!.barcode);
@@ -51,6 +198,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Future<void> _toggleFavorite() async {
     if (_product == null) return;
+    _heartController.forward().then((_) => _heartController.reverse());
     if (_isFavorite) {
       await FavoritesService.removeFavorite(_product!.barcode);
       setState(() => _isFavorite = false);
@@ -75,6 +223,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final result = await FoodApiService.analyzeWithAI(_product!);
     if (mounted) {
       setState(() { _aiResult = result; _isAnalyzing = false; });
+      if (result != null) {
+        final score = result['health_score'] as int;
+        _scoreAnimation = IntTween(begin: 0, end: score).animate(
+          CurvedAnimation(parent: _scoreController, curve: Curves.easeOut))
+          ..addListener(() {
+            if (mounted) setState(() => _displayScore = _scoreAnimation.value);
+          });
+        _scoreController.forward(from: 0);
+      }
       if (result != null && _product != null) {
         await HistoryService.saveAnalysis(
           barcode: _product!.barcode,
@@ -113,9 +270,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             actions: [
               if (_product != null)
                 IconButton(
-                  icon: Icon(
-                    _isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: _isFavorite ? Colors.red.shade300 : Colors.white,
+                  icon: ScaleTransition(
+                    scale: _heartAnimation,
+                    child: Icon(
+                      _isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: _isFavorite ? Colors.red.shade300 : Colors.white,
+                    ),
                   ),
                   onPressed: _toggleFavorite,
                 ),
