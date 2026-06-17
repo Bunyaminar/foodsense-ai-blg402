@@ -68,7 +68,7 @@ class ProductModel {
   }
 }
 
-const String aiApiUrl = 'https://humble-pancake-pjqgv54wvvpx27wqr-8000.app.github.dev';
+const String aiApiUrl = 'https://foodsense-ai-blg402-production.up.railway.app';
 
 class FoodApiService {
   static const String _baseUrl = 'https://world.openfoodfacts.org/api/v0/product';
@@ -98,7 +98,7 @@ class FoodApiService {
   // AI Model ile analiz et
   static Future<Map<String, dynamic>?> analyzeWithAI(ProductModel product) async {
     try {
-      final url = Uri.parse('https://humble-pancake-pjqgv54wvvpx27wqr-8000.app.github.dev/analyze');
+      final url = Uri.parse('https://foodsense-ai-blg402-production.up.railway.app/analyze');
       final body = {
         'name': product.name,
         'ingredients': product.ingredients ?? '',
