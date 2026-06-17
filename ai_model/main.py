@@ -67,6 +67,7 @@ class AnalyzeRequest(BaseModel):
     has_medium_risk_additives: Optional[int] = 0
     allergens: Optional[List[str]] = []
     user_allergens: Optional[List[str]] = []
+    user_diet: Optional[str] = ''
 
 class AnalyzeResponse(BaseModel):
     health_score: int
@@ -181,6 +182,22 @@ def analyze(req: AnalyzeRequest):
         if kw in ing:
             positives.append(f"Saglikli icerik: {kw}")
             health_score = min(100, health_score + 3)
+
+    # Diyet kontrolu
+    if req.user_diet and req.user_diet != '':
+        diet_warnings = {
+            'Vegan': ['et', 'tavuk', 'balik', 'sut', 'yumurta', 'honey', 'bal', 'meat', 'chicken', 'fish', 'milk', 'egg'],
+            'Vejetaryen': ['et', 'tavuk', 'balik', 'meat', 'chicken', 'fish'],
+            'Glutensiz': ['bugday', 'gluten', 'wheat', 'barley', 'rye', 'arpa', 'cavdar'],
+            'Keto': ['seker', 'sugar', 'nisan', 'starch', 'glucose'],
+        }
+        if req.user_diet in diet_warnings:
+            ing_lower = (req.ingredients or '').lower()
+            for keyword in diet_warnings[req.user_diet]:
+                if keyword in ing_lower:
+                    warnings.append(f"{req.user_diet} diyetine uygun degil: {keyword} iceriyor!")
+                    health_score = max(0, health_score - 15)
+                    break
 
     # Alerjen kontrolu
     for ua in (req.user_allergens or []):
