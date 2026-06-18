@@ -74,7 +74,7 @@ class ProductModel {
   }
 }
 
-const String aiApiUrl = 'https://congenial-sniffle-jrjwxwvx67xfr9p-8000.app.github.dev';
+const String aiApiUrl = 'https://foodsense-ai-blg402-production.up.railway.app';
 
 // Basit ingredient cevirisi
 String translateIngredients(String ingredients) {
@@ -255,7 +255,7 @@ class FoodApiService {
   // AI Model ile analiz et
   static Future<Map<String, dynamic>?> analyzeWithAI(ProductModel product) async {
     try {
-      final url = Uri.parse('https://congenial-sniffle-jrjwxwvx67xfr9p-8000.app.github.dev/analyze');
+      final url = Uri.parse('https://foodsense-ai-blg402-production.up.railway.app/analyze');
       // Kullanici tercihlerini Firestore'dan getir
       List<String> userAllergens = [];
       String? userDiet;
