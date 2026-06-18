@@ -235,6 +235,19 @@ def analyze(req: AnalyzeRequest):
         }
 
         nutrient_rules = {
+            'Kas Kazan': [
+                (req.protein_100g < 10, 'Dusuk protein ({}g/100g) - Kas kazanimi icin yetersiz!'.format(req.protein_100g), 10),
+                (req.sugar_100g > 20, 'Yuksek seker ({}g/100g) - Kas kazanimi icin ideal degil!'.format(req.sugar_100g), 8),
+            ],
+            'Saglikli Kal': [
+                (req.sugar_100g > 15, 'Yuksek seker ({}g/100g) - Saglikli beslenme icin fazla!'.format(req.sugar_100g), 8),
+                (req.salt_100g > 1.5, 'Yuksek tuz ({}g/100g) - Saglikli beslenme icin dikkat!'.format(req.salt_100g), 5),
+                (req.fat_100g > 20, 'Yuksek yag ({}g/100g) - Saglikli beslenme icin fazla!'.format(req.fat_100g), 5),
+            ],
+            'Enerji Artir': [
+                (req.energy_100g < 100, 'Dusuk kalori ({} kcal) - Enerji artisi icin yetersiz!'.format(req.energy_100g), 5),
+                (req.protein_100g < 5, 'Dusuk protein ({}g/100g) - Enerji icin yetersiz!'.format(req.protein_100g), 5),
+            ],
             'Sporcu': [
                 (req.sugar_100g > 15, 'Yuksek seker ({}g/100g) - Sporcu performansi icin ideal degil!'.format(req.sugar_100g), 10),
                 (req.protein_100g < 5, 'Dusuk protein ({}g/100g) - Sporcu icin yetersiz protein!'.format(req.protein_100g), 5),
