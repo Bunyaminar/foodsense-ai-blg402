@@ -5,6 +5,7 @@ import '../scanner/scanner_screen.dart';
 import '../favorites/favorites_screen.dart';
 import '../history/history_screen.dart';
 import '../settings/settings_screen.dart';
+import '../profile/preferences_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     const ScannerScreen(),
     const FavoritesScreen(),
     const HistoryScreen(),
-    const SettingsScreen(),
+    const PreferencesScreen(),
   ];
 
   final List<_NavItem> _navItems = [
@@ -29,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     _NavItem(Icons.qr_code_scanner_rounded, Icons.qr_code_scanner_outlined, 'Tara'),
     _NavItem(Icons.favorite_rounded, Icons.favorite_outline_rounded, 'Favoriler'),
     _NavItem(Icons.history_rounded, Icons.history_outlined, 'Geçmiş'),
-    _NavItem(Icons.settings_rounded, Icons.settings_outlined, 'Ayarlar'),
+    _NavItem(Icons.restaurant_menu_rounded, Icons.restaurant_menu_outlined, 'Diyet'),
   ];
 
   @override
