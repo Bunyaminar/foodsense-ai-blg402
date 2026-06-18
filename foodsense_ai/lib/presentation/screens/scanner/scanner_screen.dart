@@ -250,58 +250,55 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 1.8,
+                  Column(
                     children: _categories.entries.map((entry) {
                       final isSelected = _selectedCategory == entry.key;
                       final color = Color(entry.value['color'] as int);
                       return GestureDetector(
                         onTap: () => setState(() =>
                           _selectedCategory = isSelected ? null : entry.key),
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(
                             color: isSelected
-                              ? color.withValues(alpha: 0.15)
+                              ? color.withValues(alpha: 0.08)
                               : Colors.white,
-                            borderRadius: BorderRadius.circular(14),
-                            border: isSelected
-                              ? Border.all(color: color, width: 2)
-                              : null,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border(
+                              left: BorderSide(
+                                color: isSelected ? color : Colors.transparent,
+                                width: 4)),
                             boxShadow: [BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 8)],
+                              color: Colors.black.withValues(alpha: 0.04),
+                              blurRadius: 6)],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(14),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: color.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Icon(
-                                    entry.value['icon'] as IconData,
-                                    color: color, size: 20),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40, height: 40,
+                                decoration: BoxDecoration(
+                                  color: color.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(entry.key,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13,
-                                      color: const Color(0xFF1B1B1B))),
-                                ),
-                                Icon(Icons.arrow_forward_ios_rounded,
-                                  size: 12, color: Colors.grey.shade400),
-                              ],
-                            ),
+                                child: Icon(
+                                  entry.value['icon'] as IconData,
+                                  color: color, size: 20),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Text(entry.key,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: const Color(0xFF1B1B1B))),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded,
+                                size: 14,
+                                color: isSelected ? color : Colors.grey.shade400),
+                            ],
                           ),
                         ),
                       );
