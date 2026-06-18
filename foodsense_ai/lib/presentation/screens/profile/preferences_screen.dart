@@ -103,7 +103,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
               borderRadius: BorderRadius.circular(12)),
           ),
         );
-        Navigator.pop(context);
+        // Kaydedildi - MainScreen icinde calisiyoruz
       }
     } catch (e) {
       if (mounted) setState(() => _isSaving = false);
