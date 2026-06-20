@@ -368,6 +368,7 @@ if __name__ == "__main__":
 
 
 import requests as req_lib
+import os
 
 class ChatRequest(BaseModel):
     message: str
@@ -378,7 +379,7 @@ async def chat(request: ChatRequest):
         response = req_lib.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers={
-                "Authorization": "Bearer GROQ_API_KEY_PLACEHOLDER",
+                "Authorization": "Bearer " + os.environ.get("GROQ_API_KEY", ""),
                 "Content-Type": "application/json"
             },
             json={
