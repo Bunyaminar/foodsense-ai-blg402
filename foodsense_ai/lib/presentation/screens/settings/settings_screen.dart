@@ -147,8 +147,8 @@ class SettingsScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500, fontSize: 14)),
                             ),
                             Switch(
-                              value: themeProvider.isDarkMode,
-                              onChanged: (val) => themeProvider.setDarkMode(val),
+                              value: false,
+                              onChanged: null,
                               activeColor: primary,
                             ),
                           ],
@@ -297,57 +297,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                // Yardım Lazım mı?
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [primary, const Color(0xFF1B5E20)]),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Yardım Lazım mı?',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Sorularınız için uzman ekibimizle dilediğiniz zaman iletişime geçebilirsiniz.',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontSize: 12, height: 1.4)),
-                            const SizedBox(height: 12),
-                            OutlinedButton(
-                              onPressed: () {},
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                side: const BorderSide(
-                                  color: Colors.white, width: 1.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              ),
-                              child: Text('Destek Talebi Oluştur',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600, fontSize: 12)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(Icons.support_agent_rounded,
-                        color: Colors.white.withValues(alpha: 0.2),
-                        size: 60),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 24),
               ]),
             ),

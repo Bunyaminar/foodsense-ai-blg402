@@ -21,6 +21,12 @@ class AppTheme {
       textTheme: GoogleFonts.poppinsTextTheme(
         isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme),
       scaffoldBackgroundColor: isDark ? const Color(0xFF121212) : const Color(0xFFF5F7FA),
+      cardColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+      cardTheme: CardThemeData(
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
       primaryColor: primaryColor,
       appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,

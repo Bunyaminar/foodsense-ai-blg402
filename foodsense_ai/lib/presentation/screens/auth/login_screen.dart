@@ -189,8 +189,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     child: ElevatedButton(
                                       onPressed: authProvider.isLoading ? null : _handleLogin,
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        foregroundColor: Theme.of(context).primaryColor,
+                                        backgroundColor: Theme.of(context).primaryColor,
+                                        foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(14),
                                         ),

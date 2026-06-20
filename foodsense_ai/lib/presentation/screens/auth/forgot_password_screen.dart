@@ -143,8 +143,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               child: ElevatedButton(
                                 onPressed: _isLoading ? null : _sendResetEmail,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Theme.of(context).primaryColor,
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  foregroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                   ),
@@ -199,8 +199,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             child: ElevatedButton(
                               onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                                 elevation: 0,
                               ),
