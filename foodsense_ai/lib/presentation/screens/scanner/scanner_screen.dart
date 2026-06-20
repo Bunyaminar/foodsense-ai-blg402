@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -12,9 +13,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
   final _barcodeController = TextEditingController();
   final _searchController = TextEditingController();
   String _searchQuery = '';
+  String? _selectedCategory;
+  bool _showCamera = false;
+  bool _isScanning = false;
+  MobileScannerController? _cameraController;
 
   final List<Map<String, dynamic>> _allProducts = [
-    // İçecekler
     {'emoji': '🥤', 'name': 'Coca Cola', 'barcode': '5449000000996', 'color': 0xFFE53935, 'category': 'İçecek'},
     {'emoji': '🥤', 'name': 'Pepsi', 'barcode': '5449000214911', 'color': 0xFF1565C0, 'category': 'İçecek'},
     {'emoji': '🥤', 'name': 'Fanta Portakal', 'barcode': '5010477348735', 'color': 0xFFFF6F00, 'category': 'İçecek'},
@@ -24,14 +28,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
     {'emoji': '🥤', 'name': 'Uludag Gazoz', 'barcode': '8690514001043', 'color': 0xFF1565C0, 'category': 'İçecek'},
     {'emoji': '☕', 'name': 'Nescafe', 'barcode': '8690626010010', 'color': 0xFF4E342E, 'category': 'İçecek'},
     {'emoji': '🍵', 'name': 'Caykur Cay', 'barcode': '8690627010019', 'color': 0xFF2E7D32, 'category': 'İçecek'},
-    // Süt Ürünleri
     {'emoji': '🥛', 'name': 'Pinar Sut', 'barcode': '8690632050144', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
     {'emoji': '🥛', 'name': 'Sutas Sut', 'barcode': '8690632001015', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
     {'emoji': '🍶', 'name': 'Sutas Yogurt', 'barcode': '8690632145016', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
     {'emoji': '🧀', 'name': 'Pinar Kasar', 'barcode': '8690632078017', 'color': 0xFFFF8F00, 'category': 'Süt Ürünleri'},
     {'emoji': '🥛', 'name': 'Pinar Ayran', 'barcode': '8690632055003', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
     {'emoji': '🌱', 'name': 'Alpro Soya Sutu', 'barcode': '5411188108085', 'color': 0xFF2E7D32, 'category': 'Süt Ürünleri'},
-    // Çikolata
     {'emoji': '🍫', 'name': 'Nutella', 'barcode': '3017620422003', 'color': 0xFF4E342E, 'category': 'Çikolata'},
     {'emoji': '🍫', 'name': 'Milka', 'barcode': '7622210016522', 'color': 0xFF7B1FA2, 'category': 'Çikolata'},
     {'emoji': '🍫', 'name': 'Snickers', 'barcode': '5000159461122', 'color': 0xFF4E342E, 'category': 'Çikolata'},
@@ -42,21 +44,18 @@ class _ScannerScreenState extends State<ScannerScreen> {
     {'emoji': '🍫', 'name': 'Eti Tutku', 'barcode': '8690526082458', 'color': 0xFF880E4F, 'category': 'Çikolata'},
     {'emoji': '🍫', 'name': 'Ulker Cikolata', 'barcode': '8690504151027', 'color': 0xFF4E342E, 'category': 'Çikolata'},
     {'emoji': '🍯', 'name': 'Torku Findik Krema', 'barcode': '8690526510017', 'color': 0xFFFF8F00, 'category': 'Çikolata'},
-    // Bisküvi
     {'emoji': '🍪', 'name': 'Eti Cin', 'barcode': '8690526790033', 'color': 0xFF2E7D32, 'category': 'Bisküvi'},
     {'emoji': '🍪', 'name': 'Ulker Biskuvi', 'barcode': '8690504015727', 'color': 0xFF1565C0, 'category': 'Bisküvi'},
-    {'emoji': '🍪', 'name': 'Ulker Hanımeller', 'barcode': '8690504016427', 'color': 0xFF7B1FA2, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Ulker Hanimeller', 'barcode': '8690504016427', 'color': 0xFF7B1FA2, 'category': 'Bisküvi'},
     {'emoji': '🍪', 'name': 'Oreo', 'barcode': '7622210449283', 'color': 0xFF212121, 'category': 'Bisküvi'},
     {'emoji': '🍪', 'name': 'Ulker Dido', 'barcode': '8690769030019', 'color': 0xFF4E342E, 'category': 'Bisküvi'},
     {'emoji': '🍪', 'name': 'Eti Burcak', 'barcode': '8690526610007', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
     {'emoji': '🍪', 'name': 'McVities Digestive', 'barcode': '5000168201118', 'color': 0xFF795548, 'category': 'Bisküvi'},
     {'emoji': '🥨', 'name': 'Eti Crax', 'barcode': '8690526195014', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
-    // Atıştırmalık
     {'emoji': '🍟', 'name': 'Pringles', 'barcode': '5053990108812', 'color': 0xFFE53935, 'category': 'Atıştırmalık'},
     {'emoji': '🍟', 'name': 'Lays', 'barcode': '4890008100309', 'color': 0xFFFFD600, 'category': 'Atıştırmalık'},
     {'emoji': '🍟', 'name': 'Eti Cips', 'barcode': '8690526013544', 'color': 0xFFFF8F00, 'category': 'Atıştırmalık'},
     {'emoji': '🍬', 'name': 'Haribo', 'barcode': '4001686325988', 'color': 0xFFFFD600, 'category': 'Atıştırmalık'},
-    // Sağlıklı
     {'emoji': '🥣', 'name': 'Quaker Yulaf', 'barcode': '8710398100078', 'color': 0xFF795548, 'category': 'Sağlıklı'},
     {'emoji': '🥣', 'name': 'Cornflakes', 'barcode': '5053827148865', 'color': 0xFFFF8F00, 'category': 'Sağlıklı'},
     {'emoji': '🥣', 'name': 'Nestle Fitness', 'barcode': '7613036251471', 'color': 0xFFE53935, 'category': 'Sağlıklı'},
@@ -74,12 +73,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
     'Sağlıklı': {'icon': Icons.eco_rounded, 'color': 0xFF2E7D32},
   };
 
-  String? _selectedCategory;
-
   @override
   void dispose() {
     _barcodeController.dispose();
     _searchController.dispose();
+    _cameraController?.dispose();
     super.dispose();
   }
 
@@ -97,6 +95,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
   }
 
   void _navigateToDetail(String barcode) {
+    if (_showCamera) {
+      _cameraController?.stop();
+      setState(() => _showCamera = false);
+    }
     Navigator.pushNamed(context, '/product-detail', arguments: barcode);
   }
 
@@ -106,15 +108,35 @@ class _ScannerScreenState extends State<ScannerScreen> {
     _navigateToDetail(code);
   }
 
+  void _openCamera() {
+    _cameraController = MobileScannerController(
+      detectionSpeed: DetectionSpeed.normal,
+      facing: CameraFacing.back,
+    );
+    setState(() {
+      _showCamera = true;
+      _isScanning = false;
+    });
+  }
+
+  void _closeCamera() {
+    _cameraController?.dispose();
+    _cameraController = null;
+    setState(() => _showCamera = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).primaryColor;
+
+    if (_showCamera) {
+      return _buildCameraView(primary);
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       body: CustomScrollView(
         slivers: [
-          // Header
           SliverAppBar(
             pinned: true,
             backgroundColor: primary,
@@ -225,6 +247,33 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 12),
+                      // Kamera butonu
+                      GestureDetector(
+                        onTap: _openCamera,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: primary.withValues(alpha: 0.3),
+                              style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.camera_alt_rounded,
+                                color: primary, size: 20),
+                              const SizedBox(width: 8),
+                              Text('Kamerayı Aç',
+                                style: GoogleFonts.poppins(
+                                  color: primary, fontWeight: FontWeight.w600,
+                                  fontSize: 13)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -249,7 +298,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-
                   Column(
                     children: _categories.entries.map((entry) {
                       final isSelected = _selectedCategory == entry.key;
@@ -408,6 +456,159 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 ),
                 const SizedBox(height: 24),
               ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCameraView(Color primary) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          // Kamera
+          MobileScanner(
+            controller: _cameraController!,
+            onDetect: (capture) {
+              if (_isScanning) return;
+              final barcodes = capture.barcodes;
+              if (barcodes.isNotEmpty) {
+                final barcode = barcodes.first.rawValue;
+                if (barcode != null && barcode.isNotEmpty) {
+                  setState(() => _isScanning = true);
+                  _navigateToDetail(barcode);
+                }
+              }
+            },
+          ),
+
+          // Üst bar
+          Positioned(
+            top: 0, left: 0, right: 0,
+            child: SafeArea(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.7),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_rounded,
+                        color: Colors.white),
+                      onPressed: _closeCamera,
+                    ),
+                    Text('Barkod Tara',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white, fontSize: 18,
+                        fontWeight: FontWeight.w600)),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.flash_on_rounded,
+                        color: Colors.white),
+                      onPressed: () => _cameraController?.toggleTorch(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Tarama çerçevesi
+          Center(
+            child: Container(
+              width: 250, height: 250,
+              decoration: BoxDecoration(
+                border: Border.all(color: primary, width: 3),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Stack(
+                children: [
+                  // Köşe süslemeleri
+                  Positioned(top: -2, left: -2,
+                    child: Container(width: 30, height: 30,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: primary, width: 5),
+                          left: BorderSide(color: primary, width: 5)),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(16))))),
+                  Positioned(top: -2, right: -2,
+                    child: Container(width: 30, height: 30,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: primary, width: 5),
+                          right: BorderSide(color: primary, width: 5)),
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(16))))),
+                  Positioned(bottom: -2, left: -2,
+                    child: Container(width: 30, height: 30,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: primary, width: 5),
+                          left: BorderSide(color: primary, width: 5)),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16))))),
+                  Positioned(bottom: -2, right: -2,
+                    child: Container(width: 30, height: 30,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: primary, width: 5),
+                          right: BorderSide(color: primary, width: 5)),
+                        borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(16))))),
+                ],
+              ),
+            ),
+          ),
+
+          // Alt bilgi
+          Positioned(
+            bottom: 0, left: 0, right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withValues(alpha: 0.7),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text('Barkodu çerçeve içine alın',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white, fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 8),
+                  if (_isScanning)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 20, height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white, strokeWidth: 2)),
+                        const SizedBox(width: 8),
+                        Text('Analiz ediliyor...',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white, fontSize: 14)),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
         ],
