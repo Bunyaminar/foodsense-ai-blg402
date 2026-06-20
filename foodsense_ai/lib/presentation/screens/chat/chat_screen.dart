@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final primary = Theme.of(context).primaryColor;
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -115,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Beslenme Danismani',
               style: GoogleFonts.poppins(
-                color: const Color(0xFF1B1B1B), fontSize: 14,
+                color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B), fontSize: 14,
                 fontWeight: FontWeight.bold)),
             Row(children: [
               Container(width: 6, height: 6,
@@ -210,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           color: Colors.black.withValues(alpha: 0.05), blurRadius: 6)]),
                       child: Text(msg.text,
                         style: GoogleFonts.poppins(
-                          color: msg.isUser ? Colors.white : const Color(0xFF1B1B1B),
+                          color: msg.isUser ? Colors.white : Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B),
                           fontSize: 13, height: 1.5)))),
                     if (msg.isUser) const SizedBox(width: 8),
                   ]));

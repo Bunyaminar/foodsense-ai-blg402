@@ -29,7 +29,7 @@ class AppTheme {
       ),
       primaryColor: primaryColor,
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor,
+        backgroundColor: isDark ? const Color(0xFF1E1E1E) : primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
         titleTextStyle: GoogleFonts.poppins(
@@ -37,7 +37,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+        backgroundColor: isDark ? const Color(0xFF1E1E1E) : primaryColor,
           foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
     final username = displayName ?? email.split('@')[0];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -147,8 +147,8 @@ class SettingsScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500, fontSize: 14)),
                             ),
                             Switch(
-                              value: false,
-                              onChanged: null,
+                              value: themeProvider.isDarkMode,
+                              onChanged: (val) => themeProvider.setDarkMode(val),
                               activeColor: primary,
                             ),
                           ],

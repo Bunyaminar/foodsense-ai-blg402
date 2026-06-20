@@ -52,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final primary = Theme.of(context).primaryColor;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: RefreshIndicator(
         onRefresh: _loadStats,
         color: primary,

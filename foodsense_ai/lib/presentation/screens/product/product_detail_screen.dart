@@ -132,13 +132,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     final primary = Theme.of(context).primaryColor;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
             backgroundColor: Colors.white,
-            foregroundColor: const Color(0xFF1B1B1B),
+            foregroundColor: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B),
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded),
@@ -582,11 +582,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         Text(row.$1,
                           style: GoogleFonts.poppins(
                             fontSize: 13,
-                            color: row.$3 ? Colors.grey.shade500 : const Color(0xFF1B1B1B))),
+                            color: row.$3 ? Colors.grey.shade500 : Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B))),
                         Text(row.$2,
                           style: GoogleFonts.poppins(
                             fontSize: 13, fontWeight: FontWeight.w600,
-                            color: isHighSugar ? const Color(0xFFE53935) : const Color(0xFF1B1B1B))),
+                            color: isHighSugar ? const Color(0xFFE53935) : Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B))),
                       ],
                     ),
                   ),

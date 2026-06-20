@@ -61,7 +61,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final primary = Theme.of(context).primaryColor;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -78,7 +78,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     fontWeight: FontWeight.w500)),
                 Text('Favorilerim',
                   style: GoogleFonts.poppins(
-                    color: const Color(0xFF1B1B1B), fontSize: 18,
+                    color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B), fontSize: 18,
                     fontWeight: FontWeight.bold)),
               ],
             ),

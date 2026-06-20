@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final name = user?.displayName ?? email.split('@')[0];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

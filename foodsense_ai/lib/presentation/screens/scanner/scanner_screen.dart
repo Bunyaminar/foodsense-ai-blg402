@@ -134,7 +134,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -287,7 +287,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       Text('Kategoriler',
                         style: GoogleFonts.poppins(
                           fontSize: 16, fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1B1B1B))),
+                          color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B))),
                       GestureDetector(
                         onTap: () => setState(() => _selectedCategory = null),
                         child: Text('Hepsini Gör',
@@ -341,7 +341,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                                   style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
-                                    color: const Color(0xFF1B1B1B))),
+                                    color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B))),
                               ),
                               Icon(Icons.arrow_forward_ios_rounded,
                                 size: 14,

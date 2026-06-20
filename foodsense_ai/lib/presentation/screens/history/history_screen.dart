@@ -106,7 +106,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final grouped = _groupByDate();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           // Header
@@ -117,7 +117,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             elevation: 0,
             title: Text('Analiz Geçmişi',
               style: GoogleFonts.poppins(
-                color: const Color(0xFF1B1B1B), fontSize: 18,
+                color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B), fontSize: 18,
                 fontWeight: FontWeight.bold)),
             actions: [
               IconButton(
@@ -267,7 +267,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             Text(entry.key,
                               style: GoogleFonts.poppins(
                                 fontSize: 15, fontWeight: FontWeight.bold,
-                                color: const Color(0xFF1B1B1B))),
+                                color: Theme.of(context).textTheme.bodyLarge?.color ?? const Color(0xFF1B1B1B))),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Divider(
