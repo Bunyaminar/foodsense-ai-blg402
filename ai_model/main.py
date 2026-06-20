@@ -378,7 +378,7 @@ async def chat(request: ChatRequest):
         response = req_lib.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers={
-                "Authorization": "Bearer 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",
+                "Authorization": "Bearer GROQ_API_KEY_PLACEHOLDER",
                 "Content-Type": "application/json"
             },
             json={

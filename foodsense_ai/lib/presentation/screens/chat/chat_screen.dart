@@ -21,7 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   bool _isLoading = false;
-  static const String _apiKey = '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';
+  static const String _apiKey = 'GROQ_API_KEY_PLACEHOLDER';
   static const String _systemPrompt = 'Sen FoodsenseAI adli bir beslenme ve diyetisyen yapay zeka asistanisin. Turkce cevap ver. Kullanicinin sordugu beslenme, diyet, E-kodlari, besin degerleri, kilo yonetimi, spor beslenmesi gibi konularda detayli ve pratik cevaplar ver. Spesifik beslenme planlari, yemek onerileri ve gunluk kalori/protein/karbonhidrat miktarlari oner. Emoji kullan. Cevaplarin kisa ve anlasilir olsun.';
 
   @override
