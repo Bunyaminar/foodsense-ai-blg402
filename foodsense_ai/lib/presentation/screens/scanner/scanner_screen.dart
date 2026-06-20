@@ -62,6 +62,45 @@ class _ScannerScreenState extends State<ScannerScreen> {
     {'emoji': '🍝', 'name': 'Barilla Spagetti', 'barcode': '8076802085738', 'color': 0xFF1565C0, 'category': 'Sağlıklı'},
     {'emoji': '🧘', 'name': 'Activia Yogurt', 'barcode': '3228857000166', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
     {'emoji': '🌱', 'name': 'Alpro Soya', 'barcode': '5411188108085', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
+    // Ek icecekler
+    {'emoji': '🥤', 'name': 'Schweppes Tonik', 'barcode': '5449000133328', 'color': 0xFF1565C0, 'category': 'İçecek'},
+    {'emoji': '🥤', 'name': 'Burn Enerji', 'barcode': '5449000054951', 'color': 0xFF212121, 'category': 'İçecek'},
+    {'emoji': '🧃', 'name': 'Cappy Meyve Suyu', 'barcode': '5449000219640', 'color': 0xFFFF8F00, 'category': 'İçecek'},
+    {'emoji': '🥤', 'name': 'Soda Beypazari', 'barcode': '8690632200016', 'color': 0xFF0288D1, 'category': 'İçecek'},
+    {'emoji': '🧃', 'name': 'Dimes Meyve Suyu', 'barcode': '8690524050016', 'color': 0xFFFF6F00, 'category': 'İçecek'},
+    {'emoji': '☕', 'name': 'Jacobs Kahve', 'barcode': '8711000510001', 'color': 0xFF4E342E, 'category': 'İçecek'},
+    {'emoji': '🍵', 'name': 'Dogadan Cay', 'barcode': '8690633010011', 'color': 0xFF2E7D32, 'category': 'İçecek'},
+    {'emoji': '🥤', 'name': 'Monster Energy', 'barcode': '5060517882018', 'color': 0xFF33691E, 'category': 'İçecek'},
+    // Ek sut urunleri
+    {'emoji': '🧀', 'name': 'Pinar Beyaz Peynir', 'barcode': '8690632100017', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🥛', 'name': 'Danone Yogurt', 'barcode': '3033490004743', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    {'emoji': '🥛', 'name': 'Yoplait Yogurt', 'barcode': '3228020760019', 'color': 0xFFE53935, 'category': 'Süt Ürünleri'},
+    {'emoji': '🧀', 'name': 'Labneh Peynir', 'barcode': '8690632300014', 'color': 0xFFFF8F00, 'category': 'Süt Ürünleri'},
+    {'emoji': '🥛', 'name': 'Sek Sut', 'barcode': '8690633200014', 'color': 0xFF0288D1, 'category': 'Süt Ürünleri'},
+    // Ek cikolata
+    {'emoji': '🍫', 'name': 'Toblerone', 'barcode': '7622210951137', 'color': 0xFF795548, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Nestle KitKat Chunky', 'barcode': '7613035138414', 'color': 0xFFE53935, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Lindt %70', 'barcode': '3046920028761', 'color': 0xFF212121, 'category': 'Çikolata'},
+    {'emoji': '🍫', 'name': 'Ulker Alpella', 'barcode': '8690504015734', 'color': 0xFF7B1FA2, 'category': 'Çikolata'},
+    {'emoji': '🍯', 'name': 'Lotus Biskrem', 'barcode': '5410126001507', 'color': 0xFF795548, 'category': 'Çikolata'},
+    // Ek biskuvi
+    {'emoji': '🍪', 'name': 'Ulker Golf', 'barcode': '8690504016410', 'color': 0xFF2E7D32, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Petit Beurre', 'barcode': '8690504015741', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Eti Tutku Cikolatali', 'barcode': '8690526082465', 'color': 0xFF4E342E, 'category': 'Bisküvi'},
+    {'emoji': '🥨', 'name': 'Poppies Krakor', 'barcode': '8690526195021', 'color': 0xFFFF8F00, 'category': 'Bisküvi'},
+    {'emoji': '🍪', 'name': 'Digestive Light', 'barcode': '5000168204003', 'color': 0xFF795548, 'category': 'Bisküvi'},
+    // Ek atistirmalik
+    {'emoji': '🍿', 'name': 'Doritos', 'barcode': '4890008100316', 'color': 0xFFE53935, 'category': 'Atıştırmalık'},
+    {'emoji': '🍟', 'name': 'Cheetos', 'barcode': '4890008100323', 'color': 0xFFFF6F00, 'category': 'Atıştırmalık'},
+    {'emoji': '🍬', 'name': 'Mentos', 'barcode': '8000500105191', 'color': 0xFFE53935, 'category': 'Atıştırmalık'},
+    {'emoji': '🍭', 'name': 'Chupa Chups', 'barcode': '8410779001993', 'color': 0xFFE91E63, 'category': 'Atıştırmalık'},
+    {'emoji': '🥜', 'name': 'Ülker Cizi Bizi', 'barcode': '8690504151034', 'color': 0xFFFF8F00, 'category': 'Atıştırmalık'},
+    // Ek saglikli
+    {'emoji': '🌾', 'name': 'Dr Oetker Yulaf', 'barcode': '4000521004552', 'color': 0xFF795548, 'category': 'Sağlıklı'},
+    {'emoji': '🥗', 'name': 'Chia Tohumu', 'barcode': '8690526900015', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
+    {'emoji': '🫘', 'name': 'Legüm Mercimek', 'barcode': '8690526800018', 'color': 0xFFFF8F00, 'category': 'Sağlıklı'},
+    {'emoji': '🥜', 'name': 'Karma Kuruyemis', 'barcode': '8690526700014', 'color': 0xFF795548, 'category': 'Sağlıklı'},
+    {'emoji': '🌱', 'name': 'Organik Kinoa', 'barcode': '8690526600013', 'color': 0xFF2E7D32, 'category': 'Sağlıklı'},
   ];
 
   final Map<String, Map<String, dynamic>> _categories = {
