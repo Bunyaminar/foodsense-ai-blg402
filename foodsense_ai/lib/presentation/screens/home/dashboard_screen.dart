@@ -381,6 +381,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   color: Colors.grey.shade600)),
                               const SizedBox(height: 6),
                               GestureDetector(
+                                onTap: () => Navigator.pushNamed(context, '/chat'),
                                 child: Row(
                                   children: [
                                     Text('Sohbete Başla',

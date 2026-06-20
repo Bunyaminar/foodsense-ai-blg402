@@ -118,3 +118,5 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock*.json
 foodsense_ai/*adminsdk*.json
+android-sdk/
+commandlinetools-linux-11076708_latest.zip

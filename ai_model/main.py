@@ -365,3 +365,37 @@ def analyze(req: AnalyzeRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+import requests as req_lib
+
+class ChatRequest(BaseModel):
+    message: str
+
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    try:
+        response = req_lib.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={
+                "Authorization": "Bearer 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",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": [
+                    {"role": "system", "content": "Sen FoodsenseAI adli bir beslenme ve diyetisyen yapay zeka asistanisin. Turkce cevap ver. Beslenme, diyet, E-kodlari, besin degerleri, kilo yonetimi, spor beslenmesi konularinda detayli ve pratik cevaplar ver. Emoji kullan."},
+                    {"role": "user", "content": request.message}
+                ],
+                "max_tokens": 500,
+                "temperature": 0.7
+            },
+            timeout=30
+        )
+        if response.status_code == 200:
+            data = response.json()
+            return {"response": data["choices"][0]["message"]["content"]}
+        else:
+            return {"response": "Uzgunum, su an cevap veremiyorum."}
+    except Exception as e:
+        return {"response": "Baglanti hatasi: " + str(e)}

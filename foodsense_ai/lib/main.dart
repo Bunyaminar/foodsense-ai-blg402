@@ -14,6 +14,7 @@ import 'presentation/screens/auth/register_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/home/dashboard_screen.dart';
 import 'presentation/screens/home/main_screen.dart';
+import 'presentation/screens/chat/chat_screen.dart';
 import 'presentation/screens/profile/profile_screen.dart';
 import 'presentation/screens/profile/preferences_screen.dart';
 import 'presentation/screens/splash/splash_screen.dart';
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
               AppConstants.loginRoute: (context) => const LoginScreen(),
               AppConstants.registerRoute: (context) => const RegisterScreen(),
               AppConstants.dashboardRoute: (context) => const MainScreen(),
+                '/chat': (context) => const ChatScreen(),
               '/profile': (context) => const ProfileScreen(),
               '/preferences': (context) => const PreferencesScreen(),
               '/onboarding': (context) => const OnboardingScreen(),
