@@ -108,6 +108,12 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
     _loadPreferences();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadPreferences();
+  }
+
   Future<void> _loadPreferences() async {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;

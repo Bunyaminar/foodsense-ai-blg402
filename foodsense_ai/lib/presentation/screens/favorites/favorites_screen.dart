@@ -280,65 +280,61 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Akıllı Tavsiye kartı
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE0F2F1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.teal.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.lightbulb_rounded,
-                            color: Colors.teal, size: 24),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Akıllı Tavsiye',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.teal.shade700,
-                                  fontSize: 14)),
-                              Text(
-                                'Favorilerindeki ürünlere benzer daha sağlıklı alternatifler bulundu.',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: Colors.teal.shade600,
-                                  height: 1.4)),
-                              const SizedBox(height: 6),
-                              GestureDetector(
-                                child: Row(
-                                  children: [
-                                    Text('Alternatifleri Gör',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.teal.shade700,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600)),
-                                    const SizedBox(width: 4),
-                                    Icon(Icons.arrow_forward_rounded,
-                                      color: Colors.teal.shade700, size: 14),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Sikca Sorulan Sorular
+                  Text("Sıkça Sorulan Sorular",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 12),
+                  ...[{
+                    "q": "Sağlık skoru nasıl hesaplanıyor?",
+                    "a": "Ürünün şeker, tuz, yağ, protein ve lif değerlerine göre 0-100 arası AI tarafından hesaplanır."
+                  }, {
+                    "q": "E-kodları zararlı mı?",
+                    "a": "Tüm E-kodları zararlı değildir. Doğal kaynaklı olanlar (E300=C vitamini) güvenlidir. Yüksek risk etiketlilere dikkat edin."
+                  }, {
+                    "q": "Hangi ürünler sağlıklı kabul edilir?",
+                    "a": "65 ve üzeri skor alan ürünler sağlıklı, 40-65 arası orta, 40 altı dikkat gerektiren ürünlerdir."
+                  }, {
+                    "q": "Alerjen uyarısı ne anlama gelir?",
+                    "a": "Ürün gluten, süt, fındık gibi yaygın alerjenleri içeriyor demektir. Hassasiyetiniz varsa tüketmeyiniz."
+                  }, {
+                    "q": "Diyet tercihlerimi nasıl ayarlayabilirim?",
+                    "a": "Alt menüden Diyet sekmesine giderek vegan, keto, glutensiz gibi diyet tiplerinizi seçebilirsiniz."
+                  }].map((faq) => _buildFaqItem(faq["q"]!, faq["a"]!, primary)).toList(),
                   const SizedBox(height: 24),
                 ]),
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFaqItem(String question, String answer, Color primary) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(
+          color: Colors.black.withValues(alpha: 0.04),
+          blurRadius: 6)]),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+        leading: Container(
+          width: 32, height: 32,
+          decoration: BoxDecoration(
+            color: primary.withValues(alpha: 0.1),
+            shape: BoxShape.circle),
+          child: Icon(Icons.help_outline_rounded, color: primary, size: 16)),
+        title: Text(question,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600, fontSize: 13)),
+        children: [
+          Text(answer,
+            style: GoogleFonts.poppins(
+              fontSize: 12, color: Colors.grey.shade600, height: 1.5)),
         ],
       ),
     );

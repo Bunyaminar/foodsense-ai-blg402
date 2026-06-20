@@ -414,47 +414,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   const SizedBox(height: 16),
                 ],
 
-                // AI Analizi kartı
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: primary.withValues(alpha: 0.2)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('AI Analizi',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold, fontSize: 15,
-                          color: primary)),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Ürünlerin içindeki gizli şeker ve katkı maddelerini saniyeler içinde öğrenin.',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12, color: Colors.grey.shade600,
-                          height: 1.4)),
-                      const SizedBox(height: 12),
-                      OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: primary,
-                          side: BorderSide(color: primary),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        ),
-                        child: Text('Nasıl Çalışır?',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600, fontSize: 13)),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
               ]),
             ),
           ),
