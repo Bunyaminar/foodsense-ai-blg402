@@ -21,8 +21,11 @@ class SettingsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: primary),
+              onPressed: () => Navigator.pop(context),
+            ),
             pinned: true,
-            automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
             elevation: 0,
             title: Text('Ayarlar',

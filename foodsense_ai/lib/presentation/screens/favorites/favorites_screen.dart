@@ -82,12 +82,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     fontWeight: FontWeight.bold)),
               ],
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.tune_rounded, color: Colors.grey.shade600),
-                onPressed: () {},
-              ),
-            ],
+            actions: [],
           ),
 
           if (_isLoading)

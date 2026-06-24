@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     if (isMobile) {
       // Mobil: Bottom Navigation
       return Scaffold(
-        body: IndexedStack(index: _currentIndex, children: _screens),
+        body: _screens[_currentIndex],
         bottomNavigationBar: _buildBottomNav(primary),
       );
     } else {
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             _buildTopNav(primary),
             Expanded(
-              child: IndexedStack(index: _currentIndex, children: _screens),
+              child: _screens[_currentIndex],
             ),
           ],
         ),

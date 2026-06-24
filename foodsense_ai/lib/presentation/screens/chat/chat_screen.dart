@@ -122,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: const BoxDecoration(
                   color: Color(0xFF2E7D32), shape: BoxShape.circle)),
               const SizedBox(width: 4),
-              Text('Groq Llama 3.3 ile calisiyor',
+              Text('FoodsenseAI Asistan',
                 style: GoogleFonts.poppins(color: Colors.grey, fontSize: 11)),
             ]),
           ]),

@@ -122,11 +122,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             pinned: true,
             backgroundColor: Colors.white,
             elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded,
-                color: Color(0xFF2E7D32)),
-              onPressed: () => Navigator.pop(context),
-            ),
             title: Text('Diyet Tercihleri',
               style: GoogleFonts.poppins(
                 color: primary, fontSize: 18,

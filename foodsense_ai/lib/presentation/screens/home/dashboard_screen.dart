@@ -170,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     () => Navigator.pushNamed(context, '/favorites')),
                   _quickAction(Icons.history_rounded, 'Geçmiş',
                     const Color(0xFF7B1FA2),
-                    () => Navigator.pushNamed(context, '/history')),
+                    () => Navigator.pushNamed(context, '/history').then((_) => _loadStats())),
                   _quickAction(Icons.restaurant_menu_rounded, 'Diyet',
                     primary,
                     () => Navigator.pushNamed(context, '/preferences')),
@@ -282,7 +282,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     style: GoogleFonts.poppins(
                       fontSize: 16, fontWeight: FontWeight.bold)),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/history'),
+                    onTap: () => Navigator.pushNamed(context, '/history').then((_) => _loadStats()),
                     child: Text('Tümünü Gör',
                       style: GoogleFonts.poppins(
                         fontSize: 13, color: primary, fontWeight: FontWeight.w500)),
